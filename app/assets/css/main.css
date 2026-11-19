@@ -82,7 +82,7 @@
 }
 
 /* ---------- Base ---------- */
-/* Tailwind 4 resets buttons to the arrow cursor. Layered, so utilities like .cursor-paw still win. */
+/* Tailwind 4 resets buttons to the arrow cursor. Layered, so any cursor utility still wins. */
 @layer base {
   button:not(:disabled),
   [role='button']:not([aria-disabled='true']),
@@ -159,12 +159,6 @@ body {
   background-color: var(--brand);
   border-color: var(--brand);
   color: var(--brand-fg);
-}
-
-/* ---------- Paw mouse cursor (used on the "Ask the model" prompt buttons) ---------- */
-.cursor-paw,
-.cursor-paw * {
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cg fill='%23ff8a6b' stroke='%231b1f3b' stroke-width='1.2' stroke-linejoin='round'%3E%3Cellipse cx='5.2' cy='11' rx='2' ry='2.6' transform='rotate(-18 5.2 11)'/%3E%3Cellipse cx='9.4' cy='6.2' rx='2' ry='2.7' transform='rotate(-6 9.4 6.2)'/%3E%3Cellipse cx='14.6' cy='6.2' rx='2' ry='2.7' transform='rotate(6 14.6 6.2)'/%3E%3Cellipse cx='18.8' cy='11' rx='2' ry='2.6' transform='rotate(18 18.8 11)'/%3E%3Cpath d='M12 11.2c-2.9 0-6 3.2-6 6 0 1.9 1.4 2.8 3 2.8 1.1 0 1.9-.5 3-.5s1.9.5 3 .5c1.6 0 3-.9 3-2.8 0-2.8-3.1-6-6-6z'/%3E%3C/g%3E%3C/svg%3E") 16 16, pointer;
 }
 
 /* ---------- Mobile menu (full-height overlay) ---------- */

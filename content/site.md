@@ -29,7 +29,7 @@ header:
     - { href: "#skills", label: Skills }
     - { href: "#education", label: Education }
     - { href: "#github", label: GitHub }
-    - { href: "#ask", label: GloriaGPT }
+    - { href: "#faq", label: FAQ }
 footer:
   about: Gloria Galasso is an NLP and LLM data scientist based in Stuttgart, Germany. She holds an M.Sc. in Computational Linguistics and works on text classification, information extraction, LLM fine-tuning and speech technology for health.
   # {year} and {name} are filled in automatically.

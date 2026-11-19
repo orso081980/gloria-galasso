@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { profile, copy } = useCv()
 const hero = copy.hero
+const cvLabel = copy.contact.cvLabel
 const focus = useTypewriter(hero.focusAreas)
 </script>
 
@@ -35,6 +36,44 @@ const focus = useTypewriter(hero.focusAreas)
           {{ profile.tagline }}
         </p>
 
+        <!-- Contact + CV, visible without scrolling -->
+        <ul class="mt-6 flex flex-wrap gap-2.5" aria-label="Contact and profiles">
+          <li>
+            <a
+              :href="`mailto:${profile.email}`"
+              data-brand="mail"
+              class="brand-btn inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <AppIcon name="mail" :size="18" />
+              {{ hero.emailLabel }}
+            </a>
+          </li>
+          <li>
+            <a
+              :href="profile.cvPdf"
+              download
+              data-brand="cv"
+              class="brand-btn inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <AppIcon name="download" :size="18" />
+              {{ cvLabel }}
+            </a>
+          </li>
+          <li v-for="link in profile.links" :key="link.id">
+            <a
+              :href="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              :data-brand="link.id"
+              class="brand-btn inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <AppIcon :name="link.id" :size="18" />
+              {{ link.label }}
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+        </ul>
+
         <!-- Fixed height + no wrapping: the typed text can never change the layout below it. -->
         <p class="mt-4 font-mono text-base">
           <span class="block text-muted">{{ hero.obsessedLabel }}</span>
@@ -53,34 +92,12 @@ const focus = useTypewriter(hero.focusAreas)
             {{ hero.primaryCta }}
             <AppIcon name="arrow-right" :size="18" class="transition group-hover:translate-x-1" />
           </a>
-          <a
-            :href="profile.cvPdf"
-            download
-            class="inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 font-semibold transition hover:-translate-y-0.5 hover:bg-surface"
-          >
-            <AppIcon name="download" :size="18" />
-            {{ hero.secondaryCta }}
-          </a>
         </div>
 
-        <ul class="mt-6 flex items-center gap-3">
-          <li v-for="link in profile.links" :key="link.id">
-            <a
-              :href="link.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="brand-btn inline-flex size-11 items-center justify-center rounded-full border border-line bg-surface transition hover:-translate-y-1 hover:shadow-lg"
-              :data-brand="link.id"
-              :aria-label="`${link.label} (opens in a new tab)`"
-            >
-              <AppIcon :name="link.id" />
-            </a>
-          </li>
-          <li class="ml-2 inline-flex items-center gap-1.5 text-sm text-muted">
-            <AppIcon name="pin" :size="16" />
-            {{ profile.location }}
-          </li>
-        </ul>
+        <p class="mt-6 inline-flex items-center gap-1.5 text-sm text-muted">
+          <AppIcon name="pin" :size="16" />
+          {{ profile.location }}
+        </p>
 
         <div class="mt-8">
           <TokenizedName :tokenizer="hero.tokenizer" />

@@ -1,4 +1,4 @@
-/** Reveals a text word by word, like a streaming LLM answer. */
+/** Reveals a text word by word, like a streaming answer. */
 export function useTextStream(intervalMs = 35) {
   const shown = ref('')
   const isStreaming = ref(false)

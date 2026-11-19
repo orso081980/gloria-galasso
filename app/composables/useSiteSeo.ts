@@ -111,7 +111,7 @@ export function useSiteSeo() {
               mainEntityOfPage: { '@id': ids.page },
             },
             {
-              // The GloriaGPT questions double as an FAQ that answer engines can quote.
+              // The FAQ section doubles as FAQPage data that answer engines can quote.
               '@type': 'FAQPage',
               '@id': ids.faq,
               mainEntity: questions.map((question) => ({

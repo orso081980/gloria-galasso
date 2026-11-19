@@ -7,6 +7,7 @@ focusAreas:
   - interpretability
 obsessedLabel: "currently obsessed with:"
 primaryCta: "Let's talk"
+emailLabel: Email
 secondaryCta: Download CV
 stickyNote: "Wants: a great team ✨"
 monitor:

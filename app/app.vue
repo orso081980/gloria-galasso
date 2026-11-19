@@ -20,7 +20,7 @@ useAnalytics()
     <SkillsSection />
     <EducationSection />
     <GithubSection />
-    <AskTheModelSection />
+    <FaqSection />
     <ContactSection />
   </main>
 

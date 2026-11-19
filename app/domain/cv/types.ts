@@ -127,6 +127,7 @@ export interface HeroCopy {
   focusAreas: string[]
   obsessedLabel: string
   primaryCta: string
+  emailLabel: string
   secondaryCta: string
   stickyNote: string
   monitor: { caption: string; osd: string; label: string }
@@ -144,7 +145,7 @@ export interface Copy {
   skills: SectionCopy
   education: SectionCopy
   github: SectionCopy & { cta: string; noDescription: string; pushedLabel: string }
-  ask: SectionCopy & {
+  faq: SectionCopy & {
     terminalTitle: string
     promptLabel: string
     emptyState: string

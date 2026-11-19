@@ -48,12 +48,12 @@ content/
 ├── site.md              # name, headline, email, links, SEO, header menu, footer text
 ├── hero.md              # hero copy, typed phrases, monitor + tokenizer texts
 ├── languages.md         # languages (+ flag country code and level)
-├── sections/            # kicker / title / intro of every section (experience, projects, skills, education, github, ask, contact)
+├── sections/            # kicker / title / intro of every section (experience, projects, skills, education, github, faq, contact)
 ├── experience/          # one file per job
 ├── projects/            # one file per project
 ├── education/           # one file per degree
 ├── skills/              # one file per skill group
-└── questions/           # one file per GloriaGPT question (the body is the answer)
+└── faq/                 # one file per FAQ question (the body is the answer)
 ```
 
 - **Front matter** (between the `---` lines) holds plain text fields: titles, dates, tags, `icon: brain`.
@@ -83,7 +83,7 @@ app/
 │   ├── period.ts         # date formatting, language level -> percentage
 │   └── cv.repository.ts
 ├── infrastructure/       # Adapters: markdown content (content/*.md), GitHub API + snapshot
-├── composables/          # Application layer: useCv, useGithubRepos, useTheme, useInView, useTypewriter, useTextStream, useSiteSeo
+├── composables/          # Application layer: useCv, useGithubRepos, useTheme, useInView, useTypewriter, useSiteSeo
 ├── components/
 │   ├── layout/           # AppHeader, AppFooter
 │   ├── sections/         # One component per page section
@@ -103,7 +103,7 @@ a sitemap with `lastmod`, favicon set (her face) + web manifest, and semantic HT
 **GEO: being found and quoted by AI search and assistants**
 - `robots.txt` explicitly welcomes search and AI crawlers (OAI-SearchBot, ChatGPT-User, GPTBot, ClaudeBot, Claude-SearchBot, PerplexityBot, Google-Extended, Applebot-Extended, Bingbot, DuckAssistBot, CCBot...). Edit the list in `server/routes/robots.txt.ts`.
 - `/llms.txt` (short, link-based summary) and `/llms-full.txt` (the whole profile as plain markdown: experience, projects, education, skills, languages and FAQ) are generated at build time from `content/`. The page links to the latter with `<link rel="alternate">`.
-- schema.org JSON-LD graph: `WebSite`, `ProfilePage`, `Person` (job title, skills, education, languages, `sameAs`) and a `FAQPage` made from the GloriaGPT questions, so answer engines can quote clear, sourced facts.
+- schema.org JSON-LD graph: `WebSite`, `ProfilePage`, `Person` (job title, skills, education, languages, `sameAs`) and a `FAQPage` made from the FAQ section, so answer engines can quote clear, sourced facts.
 - A plain-prose bio in the footer (`footer.about` in `content/site.md`), because assistants quote sentences, not widgets.
 - **Check Cloudflare**: *Security → Bots → "Block AI bots / AI Scrapers and Crawlers"* and the *managed robots.txt* can block these crawlers before they ever read your files. For a CV you want them off.
 - Set a real domain in `NUXT_PUBLIC_SITE_URL`, then submit the sitemap in Google Search Console and Bing Webmaster Tools. Everything else (links from LinkedIn/GitHub to the site, consistent name and title) helps AI tools connect the dots.

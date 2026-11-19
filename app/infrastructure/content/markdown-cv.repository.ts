@@ -147,6 +147,7 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
         focusAreas: strList(hero.path, hero.data, 'focusAreas'),
         obsessedLabel: str(hero.path, hero.data, 'obsessedLabel'),
         primaryCta: str(hero.path, hero.data, 'primaryCta'),
+        emailLabel: str(hero.path, hero.data, 'emailLabel'),
         secondaryCta: str(hero.path, hero.data, 'secondaryCta'),
         stickyNote: str(hero.path, hero.data, 'stickyNote'),
         monitor: {
@@ -166,7 +167,7 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
       const experienceSection = section('sections/experience.md')
       const kindLabels = obj(experienceSection.file.path, experienceSection.file.data, 'kindLabels')
       const github = section('sections/github.md')
-      const ask = section('sections/ask.md')
+      const faq = section('sections/faq.md')
       const contact = section('sections/contact.md')
 
       const copy: Copy = {
@@ -202,13 +203,13 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
           noDescription: str(github.file.path, github.file.data, 'noDescription'),
           pushedLabel: str(github.file.path, github.file.data, 'pushedLabel'),
         },
-        ask: {
-          ...ask.copy,
-          terminalTitle: str(ask.file.path, ask.file.data, 'terminalTitle'),
-          promptLabel: str(ask.file.path, ask.file.data, 'promptLabel'),
-          emptyState: str(ask.file.path, ask.file.data, 'emptyState'),
-          confidenceLabel: str(ask.file.path, ask.file.data, 'confidenceLabel'),
-          sourceLabel: str(ask.file.path, ask.file.data, 'sourceLabel'),
+        faq: {
+          ...faq.copy,
+          terminalTitle: str(faq.file.path, faq.file.data, 'terminalTitle'),
+          promptLabel: str(faq.file.path, faq.file.data, 'promptLabel'),
+          emptyState: str(faq.file.path, faq.file.data, 'emptyState'),
+          confidenceLabel: str(faq.file.path, faq.file.data, 'confidenceLabel'),
+          sourceLabel: str(faq.file.path, faq.file.data, 'sourceLabel'),
         },
         contact: {
           ...contact.copy,
@@ -279,7 +280,7 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
         highlights: file.bullets,
       }))
 
-      const questions: Question[] = folder('questions').map((file) => {
+      const questions: Question[] = folder('faq').map((file) => {
         if (!file.text) throw new ContentError(file.path, 'the body (the answer) is empty')
         return {
           id: file.id,
