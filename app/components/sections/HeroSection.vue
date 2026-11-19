@@ -34,10 +34,14 @@ const focus = useTypewriter(profile.focusAreas)
           {{ profile.tagline }}
         </p>
 
+        <!-- Fixed height + no wrapping: the typed text can never change the layout below it. -->
         <p class="mt-4 font-mono text-base">
-          <span class="text-muted">currently obsessed with:</span>
+          <span class="block text-muted">currently obsessed with:</span>
           <span class="sr-only">{{ profile.focusAreas.join(', ') }}</span>
-          <span class="ml-2 font-medium text-accent" aria-hidden="true">{{ focus }}<span class="animate-blink">▍</span></span>
+          <span
+            class="block h-7 overflow-hidden whitespace-nowrap font-medium leading-7 text-accent"
+            aria-hidden="true"
+          >{{ focus }}<span class="animate-blink">▍</span></span>
         </p>
 
         <div class="mt-8 flex flex-wrap gap-3">
