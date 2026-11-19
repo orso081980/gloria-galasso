@@ -54,7 +54,6 @@ export interface Project {
   title: string
   institution: string
   period: DateRange
-  grade?: string
   highlights: string[]
   tags: string[]
   quip?: string
@@ -86,14 +85,6 @@ export interface Education {
   highlights: string[]
 }
 
-export interface Stat {
-  id: string
-  value: number
-  decimals?: number
-  suffix?: string
-  label: string
-}
-
 export interface Question {
   id: string
   prompt: string
@@ -105,7 +96,6 @@ export interface Question {
 
 export interface Cv {
   profile: Profile
-  stats: Stat[]
   experience: Experience[]
   projects: Project[]
   skills: SkillGroup[]

@@ -41,7 +41,7 @@ npm run deploy     # generate + wrangler pages deploy .output/public
 ## Editing the content
 
 All text lives in **one file**: [`app/infrastructure/content/gloria.data.ts`](app/infrastructure/content/gloria.data.ts)
-(profile, stats, experience, projects, skills, languages, education and the "Ask the model" answers).
+(profile, experience, projects, skills, languages, education and the "Ask the model" answers).
 Replace `public/cv-gloria-galasso.pdf` and `public/images/gloria.*` to update the CV download and portrait.
 `public/og-image.png` is the social preview card (1200×630).
 

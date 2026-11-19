@@ -28,10 +28,10 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
         id="ask-title"
         kicker="// inference"
         title="Ask the model about Gloria"
-        intro="Not a real LLM, just a tiny (and honest) one. Pick a prompt and watch it stream. Every answer comes straight from her CV."
+        intro="Not a real LLM, just a tiny (and honest) one. Pick a question and watch the answer stream. Every answer comes straight from her CV."
       />
 
-      <RevealOnScroll class="overflow-hidden rounded-3xl border border-line bg-ink text-paper shadow-2xl">
+      <RevealOnScroll class="overflow-hidden rounded-3xl border border-line bg-night text-night-fg shadow-2xl">
         <div class="flex items-center gap-2 border-b border-white/10 px-5 py-3" aria-hidden="true">
           <span class="size-3 rounded-full bg-[#ff5f57]" />
           <span class="size-3 rounded-full bg-[#febc2e]" />
@@ -40,16 +40,16 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
         </div>
 
         <div class="p-5 sm:p-8">
-          <p class="font-mono text-sm opacity-70" id="prompt-label">Choose a prompt:</p>
-          <ul class="mt-3 flex flex-wrap gap-2" aria-labelledby="prompt-label">
+          <p class="font-mono text-sm opacity-80" id="prompt-label">Pick a question:</p>
+          <ul class="mt-4 flex flex-wrap gap-3" aria-labelledby="prompt-label">
             <li v-for="question in questions" :key="question.id">
               <button
                 type="button"
-                class="rounded-full border px-4 py-2 text-left text-sm font-medium transition hover:-translate-y-0.5"
+                class="cursor-paw group inline-flex items-center rounded-full border-2 border-coral px-5 py-2.5 text-left text-sm font-semibold shadow-[0_4px_0_0_var(--coral)] transition active:translate-y-1 active:shadow-none sm:text-base"
                 :class="
                   active?.id === question.id
-                    ? 'border-transparent bg-accent text-ink'
-                    : 'border-white/25 bg-white/5 text-paper hover:border-white/60'
+                    ? 'translate-y-0.5 bg-coral text-night shadow-[0_2px_0_0_var(--coral)]'
+                    : 'bg-white/5 text-night-fg hover:-translate-y-0.5 hover:bg-coral hover:text-night'
                 "
                 :aria-pressed="active?.id === question.id"
                 @click="ask(question)"

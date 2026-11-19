@@ -34,6 +34,7 @@ const ICONS: Record<IconName, string> = {
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
+    :class="{ 'icon-fx': props.name !== 'arrow-right' }"
     aria-hidden="true"
     focusable="false"
     v-html="ICONS[props.name]"

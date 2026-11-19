@@ -29,13 +29,6 @@ export const gloriaCv: Cv = {
     cvPdf: '/cv-gloria-galasso.pdf',
   },
 
-  stats: [
-    { id: 'videos', value: 7389, label: 'patient videos in one benchmark' },
-    { id: 'approaches', value: 8, label: 'ML approaches compared' },
-    { id: 'languages', value: 5, label: 'languages (one is still loading)' },
-    { id: 'thesis', value: 1.3, decimals: 1, label: 'M.Sc. thesis grade (1.0 = best)' },
-  ],
-
   experience: [
     {
       id: 'modality',
@@ -75,7 +68,7 @@ export const gloriaCv: Cv = {
       kind: 'policy',
       summary: 'EU and public affairs & communications projects.',
       highlights: [],
-      quip: 'Fluent in "EU policy", the hardest low-resource language.',
+      quip: 'Fluent in "EU policy"',
     },
     {
       id: 'wonca',
@@ -96,7 +89,6 @@ export const gloriaCv: Cv = {
       title: 'Text Classification for Alzheimer’s Disease Detection',
       institution: 'M.Sc. thesis · University of Stuttgart',
       period: { start: '2025', end: '2026' },
-      grade: 'Grade 1.3',
       highlights: [
         'Fine-tuned BERT-based transformers to classify spontaneous-speech transcripts, and compared them with logistic regression on linguistic features engineered with the ELFEN library.',
         'Interpretability: applied Integrated Gradients to identify which words drove the transformers’ predictions, and compared them with the most predictive engineered features.',
@@ -160,11 +152,9 @@ export const gloriaCv: Cv = {
       institution: 'University of Stuttgart',
       location: 'Stuttgart, Germany',
       period: { start: '2023-10', end: '2026-07' },
-      grade: '1.7 (German scale, 1.0 = best)',
       highlights: [
-        'M.Sc. thesis 1.3; research module 1.0.',
         'NLP & ML: Natural Language Processing, Text Technology, Information Retrieval and Text Mining, Computational Semantics, Deep Learning for Speech and Text Processing.',
-        'Speech & health: Speech Analysis for Health Care Applications (1.3), Current Topics in Speech Technology (1.3), Topics in Phonetics (1.3).',
+        'Speech & health: Speech Analysis for Health Care Applications, Current Topics in Speech Technology, Topics in Phonetics.',
       ],
     },
     {
@@ -173,7 +163,6 @@ export const gloriaCv: Cv = {
       institution: 'University of Kent, Brussels School of International Studies',
       location: 'Brussels, Belgium',
       period: { start: '2019-09', end: '2022-04' },
-      grade: 'Merit',
       highlights: ['Coursework in international human rights law and health care in humanitarian disasters.'],
     },
     {
@@ -232,7 +221,7 @@ export const gloriaCv: Cv = {
       id: 'available',
       prompt: 'Is she available?',
       answer:
-        'Yes. M.Sc. done (final grade 1.7), based in Stuttgart, experienced in remote work. Output confidence is high; please act on it.',
+        'Yes. M.Sc. done, based in Stuttgart, experienced in remote work. Output confidence is high; please act on it.',
       confidence: 1,
       source: 'This page, honestly',
     },

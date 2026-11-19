@@ -14,7 +14,6 @@ useSiteSeo()
 
   <main id="main">
     <HeroSection />
-    <AboutSection />
     <ExperienceSection />
     <ProjectsSection />
     <SkillsSection />

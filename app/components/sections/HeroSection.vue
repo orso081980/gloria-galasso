@@ -64,7 +64,7 @@ const focus = useTypewriter(profile.focusAreas)
               :href="link.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex size-11 items-center justify-center rounded-full border border-line bg-surface transition hover:-translate-y-0.5 hover:border-violet hover:text-violet"
+              class="inline-flex size-11 items-center justify-center rounded-full border border-line bg-surface transition hover:-translate-y-1 hover:border-violet hover:bg-violet hover:text-paper hover:shadow-lg"
               :aria-label="`${link.label} (opens in a new tab)`"
             >
               <AppIcon :name="link.id" />
@@ -81,32 +81,12 @@ const focus = useTypewriter(profile.focusAreas)
         </div>
       </div>
 
-      <!-- Portrait run through an "object detector" -->
+      <!-- Portrait on a (slightly unwell) CRT monitor -->
       <figure class="relative mx-auto w-full max-w-sm lg:max-w-none">
-        <div class="relative rounded-[2rem] bg-surface p-3 shadow-2xl shadow-violet/20 ring-1 ring-line">
-          <picture>
-            <source :srcset="profile.photo.webp" type="image/webp">
-            <img
-              :src="profile.photo.jpg"
-              :alt="profile.photo.alt"
-              width="640"
-              height="640"
-              fetchpriority="high"
-              class="aspect-square w-full rounded-3xl object-cover"
-            >
-          </picture>
-
-          <div class="pointer-events-none absolute inset-3 overflow-hidden rounded-3xl" aria-hidden="true">
-            <div class="animate-scan absolute inset-x-0 h-0.5 bg-mint shadow-[0_0_14px_3px_var(--mint)]" />
-            <span class="absolute left-3 top-3 size-8 rounded-tl-xl border-l-4 border-t-4 border-accent" />
-            <span class="absolute right-3 top-3 size-8 rounded-tr-xl border-r-4 border-t-4 border-accent" />
-            <span class="absolute bottom-3 left-3 size-8 rounded-bl-xl border-b-4 border-l-4 border-accent" />
-            <span class="absolute bottom-3 right-3 size-8 rounded-br-xl border-b-4 border-r-4 border-accent" />
-          </div>
-        </div>
+        <GlitchMonitor :webp="profile.photo.webp" :jpg="profile.photo.jpg" :alt="profile.photo.alt" />
 
         <figcaption
-          class="absolute -bottom-4 left-6 rounded-lg bg-accent px-3 py-1.5 font-mono text-xs font-bold text-paper shadow-lg"
+          class="absolute -bottom-3 left-8 rounded-lg bg-accent px-3 py-1.5 font-mono text-xs font-bold text-paper shadow-lg"
           aria-hidden="true"
         >
           person: gloria · 0.99

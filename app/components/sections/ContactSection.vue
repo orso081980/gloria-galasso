@@ -20,7 +20,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
 
 <template>
   <section id="contact" class="mx-auto max-w-6xl px-5 py-20 sm:px-8" aria-labelledby="contact-title">
-    <RevealOnScroll class="relative overflow-hidden rounded-[2.5rem] bg-ink px-6 py-16 text-center text-paper sm:px-12">
+    <RevealOnScroll class="relative overflow-hidden rounded-[2.5rem] bg-night px-6 py-16 text-center text-night-fg sm:px-12">
       <div class="pointer-events-none absolute inset-0" aria-hidden="true">
         <div class="animate-float absolute -left-10 -top-10 size-64 rounded-full bg-accent/40 blur-3xl" />
         <div class="animate-float absolute -bottom-16 -right-10 size-72 rounded-full bg-violet/50 blur-3xl [animation-delay:-4s]" />
@@ -38,7 +38,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
         <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
           <a
             :href="`mailto:${profile.email}?subject=Hello%20Gloria`"
-            class="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-semibold text-ink transition hover:-translate-y-0.5 hover:shadow-xl"
+            class="inline-flex items-center gap-2 rounded-full bg-coral px-7 py-3.5 font-semibold text-night transition hover:-translate-y-0.5 hover:shadow-xl"
           >
             <AppIcon name="mail" :size="18" />
             {{ profile.email }}

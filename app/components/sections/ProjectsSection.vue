@@ -18,9 +18,6 @@ const { projects } = useCv()
         <article class="flex h-full flex-col rounded-3xl border border-line bg-surface p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl sm:p-8">
           <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-sm text-muted">
             <span>{{ formatPeriod(project.period) }}</span>
-            <span v-if="project.grade" class="rounded-full bg-mint-soft px-3 py-1 text-xs font-bold text-mint">
-              {{ project.grade }}
-            </span>
           </div>
 
           <h3 class="mt-3 font-display text-2xl font-bold leading-snug">{{ project.title }}</h3>

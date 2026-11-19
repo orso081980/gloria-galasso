@@ -8,7 +8,7 @@ onMounted(sync)
 <template>
   <button
     type="button"
-    class="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:-translate-y-0.5 hover:border-violet hover:text-violet"
+    class="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:-translate-y-0.5 hover:border-violet hover:bg-violet hover:text-paper"
     :aria-pressed="isDark"
     aria-label="Dark mode"
     @click="toggle"
