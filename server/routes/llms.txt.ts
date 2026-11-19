@@ -1,4 +1,4 @@
 export default defineEventHandler((event) => {
   setHeader(event, 'content-type', 'text/plain; charset=utf-8')
-  return buildLlmsTxt(getCv(), getSiteUrl(event))
+  return buildLlmsTxt(getCv('en'), getSiteUrl(event))
 })

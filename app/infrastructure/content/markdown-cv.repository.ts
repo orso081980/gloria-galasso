@@ -1,6 +1,7 @@
-import contentFiles from '#markdown-content'
+import contentByLocale from '#markdown-content'
 import type { MarkdownFile } from '#markdown-content'
 import type { CvRepository } from '~/domain/cv/cv.repository'
+import type { Locale } from '~/domain/i18n/locales'
 import type {
   Copy,
   CountryCode,
@@ -17,6 +18,7 @@ import type {
   SectionCopy,
   SkillGroup,
   SocialLink,
+  UiStrings,
 } from '~/domain/cv/types'
 
 /**
@@ -80,7 +82,7 @@ function oneOf<T extends string>(file: string, key: string, value: string, allow
 
 /* ---------- lookups ---------- */
 
-function buildRepository(files: MarkdownFile[]): CvRepository {
+function buildRepository(files: MarkdownFile[], locale: Locale): { get(): Cv } {
   const single = (path: string): MarkdownFile => {
     const file = files.find((candidate) => candidate.path === path)
     if (!file) throw new ContentError(path, 'file is missing')
@@ -139,6 +141,60 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
       const header = obj(site.path, sd, 'header')
       const footer = obj(site.path, sd, 'footer')
 
+      /* ----- interface texts ----- */
+      const uiFile = single('ui.md')
+      const ud = uiFile.data
+      const text = (key: string) => str(uiFile.path, ud, key)
+      const uiLevels = obj(uiFile.path, ud, 'levels')
+      const uiPlain = obj(uiFile.path, ud, 'plain')
+      const plain = (key: string) => str(uiFile.path, uiPlain, key)
+      const months = strList(uiFile.path, ud, 'months')
+      if (months.length !== 12) throw new ContentError(uiFile.path, `"months" needs 12 names (got ${months.length})`)
+      const ui: UiStrings = {
+        skipLink: text('skipLink'),
+        homeLabel: text('homeLabel'),
+        mainNav: text('mainNav'),
+        mobileNav: text('mobileNav'),
+        openMenu: text('openMenu'),
+        closeMenu: text('closeMenu'),
+        menuDialog: text('menuDialog'),
+        themeToggle: text('themeToggle'),
+        language: text('language'),
+        opensInNewTab: text('opensInNewTab'),
+        contactLinks: text('contactLinks'),
+        emailAria: text('emailAria'),
+        technologies: text('technologies'),
+        emailCopied: text('emailCopied'),
+        present: text('present'),
+        to: text('to'),
+        months,
+        levels: {
+          Native: str(uiFile.path, uiLevels, 'Native'),
+          C1: str(uiFile.path, uiLevels, 'C1'),
+          B2: str(uiFile.path, uiLevels, 'B2'),
+          B1: str(uiFile.path, uiLevels, 'B1'),
+        },
+        plain: {
+          website: plain('website'),
+          location: plain('location'),
+          status: plain('status'),
+          email: plain('email'),
+          cv: plain('cv'),
+          experience: plain('experience'),
+          projects: plain('projects'),
+          education: plain('education'),
+          skills: plain('skills'),
+          languages: plain('languages'),
+          faq: plain('faq'),
+          keywords: plain('keywords'),
+          mainPages: plain('mainPages'),
+          profiles: plain('profiles'),
+          contact: plain('contact'),
+          fullProfile: plain('fullProfile'),
+          allOnWebsite: plain('allOnWebsite'),
+        },
+      }
+
       /* ----- hero ----- */
       const hero = single('hero.md')
       const monitor = obj(hero.path, hero.data, 'monitor')
@@ -171,7 +227,11 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
       const contact = section('sections/contact.md')
 
       const copy: Copy = {
-        seo: { title: str(site.path, seo, 'title'), description: str(site.path, seo, 'description') },
+        seo: {
+          title: str(site.path, seo, 'title'),
+          description: str(site.path, seo, 'description'),
+          image: str(site.path, seo, 'image'),
+        },
         header: {
           cta: str(site.path, header, 'cta'),
           nav: list(site.path, header, 'nav').map((raw) => ({
@@ -291,14 +351,23 @@ function buildRepository(files: MarkdownFile[]): CvRepository {
         }
       })
 
-      return { profile, copy, experience, projects, skills, languages, education, questions }
+      return { locale, profile, ui, copy, experience, projects, skills, languages, education, questions }
     },
   }
 }
 
-/** Built once per process; the data is static. */
-export const markdownCvRepository: CvRepository = (() => {
-  let cached: Cv | undefined
-  const repository = buildRepository(contentFiles)
-  return { get: () => (cached ??= repository.get()) }
-})()
+/** Built once per language and process; the data is static. */
+const cache = new Map<Locale, Cv>()
+
+export const markdownCvRepository: CvRepository = {
+  get(locale) {
+    let cv = cache.get(locale)
+    if (!cv) {
+      const files = contentByLocale[locale]
+      if (!files) throw new Error(`[content] no content for language "${locale}"`)
+      cv = buildRepository(files, locale).get()
+      cache.set(locale, cv)
+    }
+    return cv
+  },
+}

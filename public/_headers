@@ -20,6 +20,22 @@
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=3600
 
+/it/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/it/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/de/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/de/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 /robots.txt
   Cache-Control: public, max-age=3600
 

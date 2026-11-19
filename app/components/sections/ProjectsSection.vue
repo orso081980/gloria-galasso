@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatPeriod } from '~/domain/cv/period'
 
-const { projects, copy } = useCv()
+const { projects, copy, ui } = useCv()
 const { kicker, title, intro } = copy.projects
 </script>
 
@@ -21,7 +21,7 @@ const { kicker, title, intro } = copy.projects
             <span class="grid size-11 place-items-center rounded-2xl bg-violet-soft text-xl text-violet">
               <FaIcon :name="project.icon" />
             </span>
-            <span class="font-mono text-sm text-muted">{{ formatPeriod(project.period) }}</span>
+            <span class="font-mono text-sm text-muted">{{ formatPeriod(project.period, ui) }}</span>
           </div>
 
           <h3 class="mt-4 font-display text-2xl font-bold leading-snug">{{ project.title }}</h3>
@@ -34,7 +34,7 @@ const { kicker, title, intro } = copy.projects
             </li>
           </ul>
 
-          <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technologies">
+          <ul class="mt-6 flex flex-wrap gap-2" :aria-label="ui.technologies">
             <li v-for="tag in project.tags" :key="tag" class="rounded-lg bg-paper px-2.5 py-1 font-mono text-xs ring-1 ring-line">
               {{ tag }}
             </li>

@@ -19,6 +19,7 @@ links:
     label: LinkedIn
     url: https://www.linkedin.com/in/gloria-g-923657221/
 seo:
+  image: /og-image.png
   title: Gloria Galasso · NLP & LLM Data Scientist
   description: Gloria Galasso is an NLP and LLM data scientist (M.Sc. Computational Linguistics) based in Stuttgart, Germany. Text classification, information extraction, LLM fine-tuning and speech for health. Open to work.
 header:

@@ -39,33 +39,52 @@ npm run deploy     # generate + wrangler pages deploy .output/public
 
 `public/_headers` adds security headers and long-lived caching for fingerprinted assets.
 
+## Languages (English, Italian, German)
+
+The site exists in three languages with their own URLs: `/` (English), `/it` and `/de`.
+A flag button in the header (and a row of flags in the mobile menu) switches language and keeps the section you are reading.
+Every page has its own `lang`, title/description, canonical URL, `hreflang` alternates, Open Graph image, structured data
+and plain-text AI files (`/llms.txt`, `/it/llms.txt`, `/de/llms.txt`...), and all three are in the sitemap.
+
 ## Editing the content
 
-All text lives in markdown files in [`content/`](content). Nothing is written in the components.
+All text lives in markdown files in [`content/`](content), one folder per language. Nothing is written in the components.
 
 ```
 content/
-├── site.md              # name, headline, email, links, SEO, header menu, footer text
-├── hero.md              # hero copy, typed phrases, monitor + tokenizer texts
-├── languages.md         # languages (+ flag country code and level)
-├── sections/            # kicker / title / intro of every section (experience, projects, skills, education, github, faq, contact)
-├── experience/          # one file per job
-├── projects/            # one file per project
-├── education/           # one file per degree
-├── skills/              # one file per skill group
-└── faq/                 # one file per FAQ question (the body is the answer)
+├── en/                  # English = the reference
+│   ├── site.md          # name, headline, email, links, SEO, header menu, footer text
+│   ├── hero.md          # hero copy, typed phrases, monitor + tokenizer texts
+│   ├── ui.md            # small interface texts: screen-reader labels, month names, language levels
+│   ├── languages.md     # languages (+ flag country code and level)
+│   ├── sections/        # kicker / title / intro of every section
+│   ├── experience/      # one file per job
+│   ├── projects/        # one file per project
+│   ├── education/       # one file per degree
+│   ├── skills/          # one file per skill group
+│   └── faq/             # one file per FAQ question (the body is the answer)
+├── it/                  # same file names, only the translated fields
+└── de/
 ```
 
 - **Front matter** (between the `---` lines) holds plain text fields: titles, dates, tags, `icon: brain`.
 - **The body** is markdown: bullet lists become the bullet points, paragraphs become text, and inline `**bold**`, `*italic*`, `` `code` `` and `[links](https://example.com)` work.
 - **Order**: files in a folder are sorted by name, so prefix them `01-`, `02-`...
 - Dates are `"YYYY-MM"` or `"YYYY"` (keep the quotes). Leave `end` out for an ongoing role.
-- A typo in a required field (or an unknown `kind`/`level`/flag) fails the build and names the file and field.
+- **Translations only contain what is translated.** Everything else (dates, URLs, icons, country codes, numbers, confidence values) is inherited from the English file, so it cannot drift. A list you provide (menu, skills, tags, languages) replaces the English one as a whole.
+- **Safety net**: a typo in a required field, a missing translation file, or a different number of bullet points than the English file fails the build and names the file and field.
+- **Change a fact once**: edit the English file and (if it is text) the `it`/`de` file; dates and links only in English.
+
+### Adding another language
+
+1. Add its code to `LOCALES` and `LOCALE_INFO` in [`app/domain/i18n/locales.ts`](app/domain/i18n/locales.ts) (name, flag, `htmlLang`, `ogLocale`).
+2. Copy `content/it` to `content/<code>` and translate it, add the flag to `FlagIcon.vue` if it is new.
+3. Allow the code in the page's `validate` (`app/pages/[[locale]]/index.vue`), add `/<code>` and its `llms*.txt` routes to `nitro.prerender.routes` in `nuxt.config.ts`, and create `public/og-image-<code>.png`.
 
 The markdown is converted to data at build time ([`modules/markdown-content.ts`](modules/markdown-content.ts)), so no markdown or YAML parser reaches the browser.
 
-Replace `public/cv-gloria-galasso.pdf` and `public/images/gloria.*` to update the CV download and portrait.
-`public/og-image.png` is the social preview card (1200×630).
+Replace `public/cv-gloria-galasso.pdf` and `public/images/gloria.*` to update the CV download and portrait (the PDF is a single English file).
+`public/og-image*.png` are the social preview cards (1200×630), one per language.
 
 ### Icons
 
@@ -102,7 +121,7 @@ a sitemap with `lastmod`, favicon set (her face) + web manifest, and semantic HT
 
 **GEO: being found and quoted by AI search and assistants**
 - `robots.txt` explicitly welcomes search and AI crawlers (OAI-SearchBot, ChatGPT-User, GPTBot, ClaudeBot, Claude-SearchBot, PerplexityBot, Google-Extended, Applebot-Extended, Bingbot, DuckAssistBot, CCBot...). Edit the list in `server/routes/robots.txt.ts`.
-- `/llms.txt` (short, link-based summary) and `/llms-full.txt` (the whole profile as plain markdown: experience, projects, education, skills, languages and FAQ) are generated at build time from `content/`. The page links to the latter with `<link rel="alternate">`.
+- `/llms.txt` (short, link-based summary) and `/llms-full.txt` (the whole profile as plain markdown: experience, projects, education, skills, languages and FAQ) are generated at build time from `content/`. The page links to the latter with `<link rel="alternate">`. Each language has its own copy.
 - schema.org JSON-LD graph: `WebSite`, `ProfilePage`, `Person` (job title, skills, education, languages, `sameAs`) and a `FAQPage` made from the FAQ section, so answer engines can quote clear, sourced facts.
 - A plain-prose bio in the footer (`footer.about` in `content/site.md`), because assistants quote sentences, not widgets.
 - **Check Cloudflare**: *Security → Bots → "Block AI bots / AI Scrapers and Crawlers"* and the *managed robots.txt* can block these crawlers before they ever read your files. For a CV you want them off.

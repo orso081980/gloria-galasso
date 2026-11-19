@@ -2,7 +2,7 @@
 import { formatPartialDate } from '~/domain/cv/period'
 import { languageColor, selectShowcaseRepos } from '~/domain/github/showcase'
 
-const { profile, copy } = useCv()
+const { profile, copy, ui } = useCv()
 const { kicker, title, intro, cta, noDescription, pushedLabel } = copy.github
 const { data } = useGithubRepos()
 
@@ -36,7 +36,7 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
                 rel="noopener noreferrer"
                 class="text-violet after:absolute after:inset-0 after:rounded-3xl after:content-[''] hover:underline"
               >
-                {{ repo.name }}<span class="sr-only"> (opens in a new tab)</span>
+                {{ repo.name }}<span class="sr-only"> ({{ ui.opensInNewTab }})</span>
               </a>
             </h3>
 
@@ -53,7 +53,7 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
               </span>
               <span class="inline-flex items-center gap-1.5">
                 <FaIcon name="code-commit" />
-                {{ pushedLabel }} {{ formatPartialDate(repo.pushedAt.slice(0, 7)) }}
+                {{ pushedLabel }} {{ formatPartialDate(repo.pushedAt.slice(0, 7), ui) }}
               </span>
             </p>
           </article>
@@ -70,7 +70,7 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
         >
           <AppIcon name="github" :size="18" />
           {{ cta }}
-          <span class="sr-only">(opens in a new tab)</span>
+          <span class="sr-only">({{ ui.opensInNewTab }})</span>
         </a>
       </RevealOnScroll>
     </div>

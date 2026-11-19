@@ -1,23 +1,18 @@
-import type { DateRange, LanguageLevel, PartialDate } from './types'
+import type { DateRange, LanguageLevel, PartialDate, UiStrings } from './types'
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+type PeriodTexts = Pick<UiStrings, 'months' | 'present'>
 
-/** 'YYYY-MM' -> 'Jun 2026', 'YYYY' -> '2026'. Locale independent so SSR and client always match. */
-export function formatPartialDate(date: PartialDate): string {
+/** 'YYYY-MM' -> 'Jun 2026' (month names of the page language), 'YYYY' -> '2026'. Locale independent code, so SSR and client always match. */
+export function formatPartialDate(date: PartialDate, ui: Pick<UiStrings, 'months'>): string {
   const [year, month] = date.split('-')
   const monthIndex = month ? Number(month) - 1 : -1
-  return monthIndex >= 0 && monthIndex < 12 ? `${MONTHS[monthIndex]} ${year}` : String(year)
+  return monthIndex >= 0 && monthIndex < 12 ? `${ui.months[monthIndex]} ${year}` : String(year)
 }
 
-export function formatPeriod({ start, end }: DateRange): string {
-  if (!end) return `${formatPartialDate(start)} – Present`
-  if (start === end) return formatPartialDate(start)
-  return `${formatPartialDate(start)} – ${formatPartialDate(end)}`
-}
-
-/** Machine readable value for the <time> element. */
-export function toIso(date: PartialDate): string {
-  return date
+export function formatPeriod({ start, end }: DateRange, ui: PeriodTexts): string {
+  if (!end) return `${formatPartialDate(start, ui)} – ${ui.present}`
+  if (start === end) return formatPartialDate(start, ui)
+  return `${formatPartialDate(start, ui)} – ${formatPartialDate(end, ui)}`
 }
 
 const LEVEL_TO_PERCENT: Record<LanguageLevel, number> = {

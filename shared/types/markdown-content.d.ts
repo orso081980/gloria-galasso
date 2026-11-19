@@ -17,6 +17,7 @@ declare module '#markdown-content' {
     text: string
   }
 
-  const files: MarkdownFile[]
-  export default files
+  /** All markdown files per language ('en' | 'it' | 'de'), already merged with the English reference. */
+  const content: Record<string, MarkdownFile[]>
+  export default content
 }

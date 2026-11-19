@@ -2,7 +2,7 @@
 import { formatPartialDate, formatPeriod } from '~/domain/cv/period'
 import type { ExperienceKind } from '~/domain/cv/types'
 
-const { experience, copy } = useCv()
+const { experience, copy, ui } = useCv()
 const { kicker, title, intro, kindLabels } = copy.experience
 
 const kindIcon: Record<ExperienceKind, string> = {
@@ -78,7 +78,7 @@ const isLeft = (index: number) => index % 2 === 0
                 <FaIcon :name="iconOf(item.kind)" />
                 {{ labelOf(item.kind) }}
               </span>
-              <p class="font-mono text-sm text-muted">{{ formatPeriod(item.period) }}</p>
+              <p class="font-mono text-sm text-muted">{{ formatPeriod(item.period, ui) }}</p>
             </div>
 
             <h3 class="mt-3 font-display text-2xl font-bold sm:text-3xl lg:mt-0">{{ item.role }}</h3>
@@ -108,11 +108,11 @@ const isLeft = (index: number) => index % 2 === 0
             :class="isLeft(index) ? 'lg:col-start-2 lg:text-left' : 'lg:col-start-1 lg:text-right'"
           >
             <p class="font-display text-3xl font-black leading-tight">
-              <time :datetime="item.period.start">{{ formatPartialDate(item.period.start) }}</time>
+              <time :datetime="item.period.start">{{ formatPartialDate(item.period.start, ui) }}</time>
               <span class="mx-1 text-muted" aria-hidden="true">→</span>
-              <span class="sr-only"> to </span>
-              <time v-if="item.period.end" :datetime="item.period.end">{{ formatPartialDate(item.period.end) }}</time>
-              <span v-else>Present</span>
+              <span class="sr-only"> {{ ui.to }} </span>
+              <time v-if="item.period.end" :datetime="item.period.end">{{ formatPartialDate(item.period.end, ui) }}</time>
+              <span v-else>{{ ui.present }}</span>
             </p>
             <span class="mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-xs font-bold" :class="toneOf(item.kind)">
               <FaIcon :name="iconOf(item.kind)" />

@@ -43,7 +43,18 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
-      routes: ['/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt'],
+      routes: [
+        '/it',
+        '/de',
+        '/sitemap.xml',
+        '/robots.txt',
+        '/llms.txt',
+        '/llms-full.txt',
+        '/it/llms.txt',
+        '/it/llms-full.txt',
+        '/de/llms.txt',
+        '/de/llms-full.txt',
+      ],
     },
   },
 

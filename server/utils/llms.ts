@@ -1,5 +1,7 @@
 import type { Cv } from '../../app/domain/cv/types'
 import { formatPeriod } from '../../app/domain/cv/period'
+import { LOCALES, LOCALE_INFO, localePath } from '../../app/domain/i18n/locales'
+import type { Locale } from '../../app/domain/i18n/locales'
 
 /** Inline HTML produced from the markdown bodies -> markdown again (for the plain-text AI files). */
 export function htmlToMarkdown(html: string): string {
@@ -17,89 +19,93 @@ export function htmlToMarkdown(html: string): string {
 }
 
 const absolute = (siteUrl: string, path: string) => (path.startsWith('http') ? path : `${siteUrl}${path}`)
+const pageUrl = (siteUrl: string, locale: Locale) => (locale === 'en' ? `${siteUrl}/` : `${siteUrl}${localePath(locale)}`)
+const prefix = (locale: Locale) => (locale === 'en' ? '' : localePath(locale))
 
 /**
- * /llms.txt: the short, link-based summary that AI assistants and search tools look for
- * (https://llmstxt.org).
+ * /llms.txt (and /it/llms.txt, /de/llms.txt): the short, link-based summary that AI assistants and
+ * search tools look for (https://llmstxt.org), in the language of the page.
  */
 export function buildLlmsTxt(cv: Cv, siteUrl: string): string {
-  const { profile, copy } = cv
-  const github = profile.links.map((link) => `- [${link.label}](${link.url}): ${profile.name} on ${link.label}`)
+  const { profile, copy, ui, locale } = cv
+  const p = ui.plain
   return [
     `# ${profile.name}`,
     '',
     `> ${copy.seo.description}`,
     '',
-    `${profile.name} is currently ${profile.availability.split('·')[0]!.trim().toLowerCase()}. Everything on the website is also available as plain text in [llms-full.txt](${siteUrl}/llms-full.txt).`,
+    `${p.allOnWebsite} [llms-full.txt](${siteUrl}${prefix(locale)}/llms-full.txt).`,
     '',
-    '## Main pages',
+    `## ${p.mainPages}`,
     '',
-    `- [Website](${siteUrl}/): CV, projects, skills, education and contact`,
-    `- [Full profile as plain text](${siteUrl}/llms-full.txt): experience, projects, education, skills, languages and FAQ`,
-    `- [CV (PDF)](${absolute(siteUrl, profile.cvPdf)}): downloadable résumé`,
+    ...LOCALES.map((code) => `- [${p.website} (${LOCALE_INFO[code].name})](${pageUrl(siteUrl, code)})`),
+    `- [${p.fullProfile}](${siteUrl}${prefix(locale)}/llms-full.txt)`,
+    `- [${p.cv}](${absolute(siteUrl, profile.cvPdf)})`,
     '',
-    '## Profiles',
+    `## ${p.profiles}`,
     '',
-    ...github,
+    ...profile.links.map((link) => `- [${link.label}](${link.url})`),
     '',
-    '## Contact',
+    `## ${p.contact}`,
     '',
-    `- Email: ${profile.email}`,
-    `- Location: ${profile.location}`,
+    `- ${p.email}: ${profile.email}`,
+    `- ${p.location}: ${profile.location}`,
+    `- ${p.status}: ${profile.availability}`,
     '',
   ].join('\n')
 }
 
-/** /llms-full.txt: the whole profile as markdown, generated from the same files as the page. */
+/** /llms-full.txt (per language): the whole profile as markdown, generated from the same files as the page. */
 export function buildLlmsFullTxt(cv: Cv, siteUrl: string): string {
-  const { profile, copy } = cv
+  const { profile, copy, ui, locale } = cv
+  const p = ui.plain
   const lines: string[] = [
     `# ${profile.name}: ${profile.headline}`,
     '',
     `> ${copy.seo.description}`,
     '',
-    `- Website: ${siteUrl}/`,
-    `- Location: ${profile.location}`,
-    `- Status: ${profile.availability}`,
-    `- Email: ${profile.email}`,
+    `- ${p.website}: ${pageUrl(siteUrl, locale)}`,
+    `- ${p.location}: ${profile.location}`,
+    `- ${p.status}: ${profile.availability}`,
+    `- ${p.email}: ${profile.email}`,
     ...profile.links.map((link) => `- ${link.label}: ${link.url}`),
-    `- CV (PDF): ${absolute(siteUrl, profile.cvPdf)}`,
+    `- ${p.cv}: ${absolute(siteUrl, profile.cvPdf)}`,
     '',
     copy.footer.about,
     '',
-    '## Experience',
+    `## ${p.experience}`,
     '',
   ]
 
   for (const job of cv.experience) {
-    lines.push(`### ${job.role}, ${job.organization} (${formatPeriod(job.period)})`, '', `${job.location}. ${job.summary}`, '')
+    lines.push(`### ${job.role}, ${job.organization} (${formatPeriod(job.period, ui)})`, '', `${job.location}. ${job.summary}`, '')
     for (const bullet of job.highlights) lines.push(`- ${htmlToMarkdown(bullet)}`)
     if (job.highlights.length) lines.push('')
   }
 
-  lines.push('## Projects', '')
+  lines.push(`## ${p.projects}`, '')
   for (const project of cv.projects) {
-    lines.push(`### ${project.title} (${formatPeriod(project.period)})`, '', `${project.institution}.`, '')
+    lines.push(`### ${project.title} (${formatPeriod(project.period, ui)})`, '', `${project.institution}.`, '')
     for (const bullet of project.highlights) lines.push(`- ${htmlToMarkdown(bullet)}`)
-    lines.push('', `Keywords: ${project.tags.join(', ')}`, '')
+    lines.push('', `${p.keywords}: ${project.tags.join(', ')}`, '')
   }
 
-  lines.push('## Education', '')
+  lines.push(`## ${p.education}`, '')
   for (const item of cv.education) {
-    lines.push(`### ${item.degree}, ${item.institution} (${formatPeriod(item.period)})`, '', item.location + (item.grade ? `. ${item.grade}` : ''), '')
+    lines.push(`### ${item.degree}, ${item.institution} (${formatPeriod(item.period, ui)})`, '', item.location + (item.grade ? `. ${item.grade}` : ''), '')
     for (const bullet of item.highlights) lines.push(`- ${htmlToMarkdown(bullet)}`)
     lines.push('')
   }
 
-  lines.push('## Skills', '')
+  lines.push(`## ${p.skills}`, '')
   for (const group of cv.skills) lines.push(`- ${group.label}: ${group.skills.join(', ')}`)
 
-  lines.push('', '## Languages', '')
+  lines.push('', `## ${p.languages}`, '')
   for (const language of cv.languages.items) {
-    lines.push(`- ${language.name}: ${language.level}${language.note ? ` (${language.note})` : ''}`)
+    lines.push(`- ${language.name}: ${ui.levels[language.level]}${language.note ? ` (${language.note})` : ''}`)
   }
 
-  lines.push('', '## Frequently asked questions', '')
+  lines.push('', `## ${p.faq}`, '')
   for (const question of cv.questions) lines.push(`### ${question.prompt}`, '', question.answer, '')
 
   return lines.join('\n')

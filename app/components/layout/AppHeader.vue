@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { profile, copy } = useCv()
+const { profile, copy, ui } = useCv()
+const homeLabel = ui.homeLabel.replace('{name}', profile.name)
+const emailLabel = ui.emailAria.replace('{email}', profile.email)
 
 const links = copy.header.nav
 const ctaLabel = copy.header.cta
@@ -76,12 +78,12 @@ onBeforeUnmount(() => {
     :class="scrolled ? 'border-line bg-paper/90 backdrop-blur' : 'border-transparent bg-transparent'"
   >
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
-      <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" aria-label="Gloria Galasso, back to top">
+      <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" :aria-label="homeLabel">
         <span class="grid size-9 place-items-center rounded-xl bg-ink text-sm font-black text-paper">GG</span>
         <span class="hidden sm:inline lg:hidden xl:inline">{{ profile.name }}</span>
       </a>
 
-      <nav class="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Main">
+      <nav class="hidden items-center gap-0.5 lg:flex xl:gap-1" :aria-label="ui.mainNav">
         <a
           v-for="link in links"
           :key="link.href"
@@ -100,6 +102,7 @@ onBeforeUnmount(() => {
           <FaIcon name="envelope" />
           {{ ctaLabel }}
         </a>
+        <LanguageSwitcher />
         <ThemeToggle />
         <button
           ref="menuButton"
@@ -107,7 +110,7 @@ onBeforeUnmount(() => {
           class="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface lg:hidden"
           :aria-expanded="menuOpen"
           aria-controls="mobile-nav"
-          aria-label="Open menu"
+          :aria-label="ui.openMenu"
           @click="menuOpen = true"
         >
           <AppIcon name="menu" />
@@ -126,10 +129,10 @@ onBeforeUnmount(() => {
       class="fixed inset-0 z-50 flex h-dvh flex-col bg-paper lg:hidden"
       role="dialog"
       aria-modal="true"
-      aria-label="Main menu"
+      :aria-label="ui.menuDialog"
     >
       <div class="flex h-16 shrink-0 items-center justify-between px-5">
-        <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" aria-label="Gloria Galasso, back to top" @click="closeMenu">
+        <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" :aria-label="homeLabel" @click="closeMenu">
           <span class="grid size-9 place-items-center rounded-xl bg-ink text-sm font-black text-paper">GG</span>
         </a>
         <div class="flex items-center gap-2">
@@ -138,7 +141,7 @@ onBeforeUnmount(() => {
             ref="closeButton"
             type="button"
             class="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface"
-            aria-label="Close menu"
+            :aria-label="ui.closeMenu"
             @click="closeMenu"
           >
             <AppIcon name="x" />
@@ -172,7 +175,7 @@ onBeforeUnmount(() => {
         <p class="menu-item mt-2 text-muted" style="--i: 2">{{ profile.tagline }}</p>
 
         <!-- navigation -->
-        <nav class="mt-6" aria-label="Main (mobile)">
+        <nav class="mt-6" :aria-label="ui.mobileNav">
           <ul class="grid gap-1">
             <li v-for="(link, index) in links" :key="link.href" class="menu-item" :style="{ '--i': index + 3 }">
               <a
@@ -185,6 +188,10 @@ onBeforeUnmount(() => {
             </li>
           </ul>
         </nav>
+
+        <div class="menu-item mt-6" style="--i: 9">
+          <LanguageSwitcher variant="inline" @navigate="closeMenu" />
+        </div>
       </div>
 
       <!-- pinned at the bottom: call to action + social links -->
@@ -206,7 +213,7 @@ onBeforeUnmount(() => {
               rel="noopener noreferrer"
               :data-brand="link.id"
               class="brand-btn inline-flex size-12 items-center justify-center rounded-full border border-line bg-surface transition"
-              :aria-label="`${link.label} (opens in a new tab)`"
+              :aria-label="`${link.label} (${ui.opensInNewTab})`"
             >
               <AppIcon :name="link.id" />
             </a>
@@ -216,7 +223,7 @@ onBeforeUnmount(() => {
               :href="`mailto:${profile.email}`"
               data-brand="mail"
               class="brand-btn inline-flex size-12 items-center justify-center rounded-full border border-line bg-surface transition"
-              :aria-label="`Email ${profile.email}`"
+              :aria-label="emailLabel"
             >
               <AppIcon name="mail" />
             </a>

@@ -3,6 +3,8 @@
  * Pure TypeScript: no Vue, no Nuxt, no I/O. Everything else depends on this layer, never the opposite.
  */
 
+import type { Locale } from '../i18n/locales'
+
 /** Partial ISO date: 'YYYY' or 'YYYY-MM'. */
 export type PartialDate = string
 
@@ -135,7 +137,7 @@ export interface HeroCopy {
 }
 
 export interface Copy {
-  seo: { title: string; description: string }
+  seo: { title: string; description: string; image: string }
   header: { cta: string; nav: NavLink[] }
   /** `copyright` may contain {year} and {name}. */
   footer: { about: string; copyright: string; status: string; built: string }
@@ -155,8 +157,55 @@ export interface Copy {
   contact: SectionCopy & { emailSubject: string; copyLabel: string; copiedLabel: string; cvLabel: string }
 }
 
+/** Small interface texts: screen-reader labels, month names, level names, plain-text headings. */
+export interface UiStrings {
+  skipLink: string
+  /** Contains {name}. */
+  homeLabel: string
+  mainNav: string
+  mobileNav: string
+  openMenu: string
+  closeMenu: string
+  menuDialog: string
+  themeToggle: string
+  language: string
+  opensInNewTab: string
+  contactLinks: string
+  /** Contains {email}. */
+  emailAria: string
+  technologies: string
+  emailCopied: string
+  present: string
+  /** Spoken between two dates: "Jun 2026 to Nov 2026". */
+  to: string
+  /** Twelve short month names, January first. */
+  months: string[]
+  levels: Record<LanguageLevel, string>
+  plain: {
+    website: string
+    location: string
+    status: string
+    email: string
+    cv: string
+    experience: string
+    projects: string
+    education: string
+    skills: string
+    languages: string
+    faq: string
+    keywords: string
+    mainPages: string
+    profiles: string
+    contact: string
+    fullProfile: string
+    allOnWebsite: string
+  }
+}
+
 export interface Cv {
+  locale: Locale
   profile: Profile
+  ui: UiStrings
   copy: Copy
   experience: Experience[]
   projects: Project[]

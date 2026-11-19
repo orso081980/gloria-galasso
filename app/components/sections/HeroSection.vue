@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { profile, copy } = useCv()
+const { profile, copy, ui } = useCv()
 const hero = copy.hero
 const cvLabel = copy.contact.cvLabel
 const focus = useTypewriter(hero.focusAreas)
@@ -37,7 +37,7 @@ const focus = useTypewriter(hero.focusAreas)
         </p>
 
         <!-- Contact + CV, visible without scrolling -->
-        <ul class="mt-6 flex flex-wrap gap-2.5" aria-label="Contact and profiles">
+        <ul class="mt-6 flex flex-wrap gap-2.5" :aria-label="ui.contactLinks">
           <li>
             <a
               :href="`mailto:${profile.email}`"
@@ -69,7 +69,7 @@ const focus = useTypewriter(hero.focusAreas)
             >
               <AppIcon :name="link.id" :size="18" />
               {{ link.label }}
-              <span class="sr-only">(opens in a new tab)</span>
+              <span class="sr-only">({{ ui.opensInNewTab }})</span>
             </a>
           </li>
         </ul>

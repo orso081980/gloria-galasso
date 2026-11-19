@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatPeriod } from '~/domain/cv/period'
 
-const { education, copy } = useCv()
+const { education, copy, ui } = useCv()
 const { kicker, title, intro } = copy.education
 </script>
 
@@ -21,7 +21,7 @@ const { kicker, title, intro } = copy.education
             <span class="grid size-12 place-items-center rounded-2xl bg-violet-soft text-2xl text-violet">
               <FaIcon :name="item.icon" />
             </span>
-            <p class="font-mono text-sm text-muted">{{ formatPeriod(item.period) }}</p>
+            <p class="font-mono text-sm text-muted">{{ formatPeriod(item.period, ui) }}</p>
           </div>
           <h3 class="mt-4 font-display text-xl font-bold leading-snug">{{ item.degree }}</h3>
           <p class="mt-2 flex items-start gap-2 font-semibold text-violet">

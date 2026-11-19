@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { levelToPercent } from '~/domain/cv/period'
+import type { LanguageLevel } from '~/domain/cv/types'
 
-const { skills, languages, copy } = useCv()
+const { skills, languages, copy, ui } = useCv()
 const { kicker, title, intro } = copy.skills
 const { title: languagesTitle, intro: languagesIntro, items: languageItems } = languages
 
 const tones = ['bg-violet-soft text-violet', 'bg-accent-soft text-accent', 'bg-mint-soft text-mint', 'bg-sun-soft text-ink']
 const toneFor = (n: number) => tones[n % tones.length]
+const levelLabel = (level: LanguageLevel) => ui.levels[level]
 </script>
 
 <template>
@@ -62,7 +64,7 @@ const toneFor = (n: number) => tones[n % tones.length]
                 {{ language.name }}
               </span>
               <span class="font-mono text-sm text-muted">
-                {{ language.level }}<template v-if="language.note"> · {{ language.note }}</template>
+                {{ levelLabel(language.level) }}<template v-if="language.note"> · {{ language.note }}</template>
               </span>
             </div>
             <div class="mt-2 h-2.5 overflow-hidden rounded-full bg-line" aria-hidden="true">

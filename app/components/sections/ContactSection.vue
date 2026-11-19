@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { profile, copy } = useCv()
+const { profile, copy, ui } = useCv()
 const { kicker, title, intro, emailSubject, copyLabel, copiedLabel, cvLabel } = copy.contact
 
 const copied = ref(false)
@@ -52,7 +52,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
             <AppIcon :name="copied ? 'check' : 'copy'" :size="18" />
             {{ copied ? copiedLabel : copyLabel }}
           </button>
-          <span class="sr-only" role="status" aria-live="polite">{{ copied ? 'Email address copied' : '' }}</span>
+          <span class="sr-only" role="status" aria-live="polite">{{ copied ? ui.emailCopied : '' }}</span>
         </div>
 
         <ul class="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold">
@@ -66,7 +66,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
             >
               <AppIcon :name="link.id" :size="18" />
               {{ link.label }}
-              <span class="sr-only">(opens in a new tab)</span>
+              <span class="sr-only">({{ ui.opensInNewTab }})</span>
             </a>
           </li>
           <li>
