@@ -16,6 +16,9 @@
     "deploy": "npm run generate && npx wrangler pages deploy .output/public --project-name=gloria-galasso"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
+    "@fortawesome/vue-fontawesome": "^3.3.3",
     "country-flag-icons": "^1.6.20",
     "nuxt": "^4.6.4",
     "vue": "^3.5.0"
@@ -23,8 +26,11 @@
   "devDependencies": {
     "@nuxt/fonts": "^1.2.0",
     "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "marked": "^18.2.1",
     "tailwindcss": "^4.3.5",
     "typescript": "^5.9.0",
-    "vue-tsc": "^3.0.0"
+    "vue-tsc": "^3.0.0",
+    "yaml": "^2.9.1"
   }
 }

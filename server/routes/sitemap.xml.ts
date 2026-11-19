@@ -1,12 +1,17 @@
 export default defineEventHandler((event) => {
-  const siteUrl = useRuntimeConfig(event).public.siteUrl.replace(/\/$/, '')
+  const siteUrl = getSiteUrl(event)
+  const lastmod = useRuntimeConfig(event).public.buildDate
   setHeader(event, 'content-type', 'application/xml; charset=utf-8')
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>${siteUrl}/</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>${siteUrl}/og-image.png</image:loc>
+    </image:image>
   </url>
 </urlset>
 `

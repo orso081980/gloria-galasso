@@ -1,5 +1,6 @@
 <script setup lang="ts">
 useSiteSeo()
+useAnalytics()
 </script>
 
 <template>

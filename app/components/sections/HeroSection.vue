@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const { profile } = useCv()
-const focus = useTypewriter(profile.focusAreas)
+const { profile, copy } = useCv()
+const hero = copy.hero
+const focus = useTypewriter(hero.focusAreas)
 </script>
 
 <template>
@@ -36,8 +37,8 @@ const focus = useTypewriter(profile.focusAreas)
 
         <!-- Fixed height + no wrapping: the typed text can never change the layout below it. -->
         <p class="mt-4 font-mono text-base">
-          <span class="block text-muted">currently obsessed with:</span>
-          <span class="sr-only">{{ profile.focusAreas.join(', ') }}</span>
+          <span class="block text-muted">{{ hero.obsessedLabel }}</span>
+          <span class="sr-only">{{ hero.focusAreas.join(', ') }}</span>
           <span
             class="block h-7 overflow-hidden whitespace-nowrap font-medium leading-7 text-accent"
             aria-hidden="true"
@@ -49,7 +50,7 @@ const focus = useTypewriter(profile.focusAreas)
             href="#contact"
             class="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 font-semibold text-paper transition hover:-translate-y-0.5 hover:shadow-xl"
           >
-            Let's talk
+            {{ hero.primaryCta }}
             <AppIcon name="arrow-right" :size="18" class="transition group-hover:translate-x-1" />
           </a>
           <a
@@ -58,7 +59,7 @@ const focus = useTypewriter(profile.focusAreas)
             class="inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 font-semibold transition hover:-translate-y-0.5 hover:bg-surface"
           >
             <AppIcon name="download" :size="18" />
-            Download CV
+            {{ hero.secondaryCta }}
           </a>
         </div>
 
@@ -82,25 +83,31 @@ const focus = useTypewriter(profile.focusAreas)
         </ul>
 
         <div class="mt-8">
-          <TokenizedName />
+          <TokenizedName :tokenizer="hero.tokenizer" />
         </div>
       </div>
 
       <!-- Portrait on a (slightly unwell) CRT monitor -->
       <figure class="relative mx-auto w-full max-w-sm lg:max-w-none">
-        <GlitchMonitor :webp="profile.photo.webp" :jpg="profile.photo.jpg" :alt="profile.photo.alt" />
+        <GlitchMonitor
+          :webp="profile.photo.webp"
+          :jpg="profile.photo.jpg"
+          :alt="profile.photo.alt"
+          :osd="hero.monitor.osd"
+          :label="hero.monitor.label"
+        />
 
         <figcaption
           class="absolute -bottom-3 left-8 rounded-lg bg-accent px-3 py-1.5 font-mono text-xs font-bold text-paper shadow-lg"
           aria-hidden="true"
         >
-          person: gloria · 0.99
+          {{ hero.monitor.caption }}
         </figcaption>
         <p
           class="absolute -right-2 top-8 hidden rotate-6 rounded-xl border border-line bg-sun-soft px-3 py-2 text-sm font-semibold shadow-lg sm:block"
           aria-hidden="true"
         >
-          Wants: a great team ✨
+          {{ hero.stickyNote }}
         </p>
       </figure>
     </div>

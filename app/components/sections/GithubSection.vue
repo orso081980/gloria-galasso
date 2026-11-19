@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { formatPartialDate } from '~/domain/cv/period'
-import { describeRepo, languageColor, selectShowcaseRepos } from '~/domain/github/showcase'
+import { languageColor, selectShowcaseRepos } from '~/domain/github/showcase'
 
-const { profile } = useCv()
+const { profile, copy } = useCv()
+const { kicker, title, intro, cta, noDescription, pushedLabel } = copy.github
 const { data } = useGithubRepos()
 
 const repos = computed(() => selectShowcaseRepos(data.value ?? []))
@@ -15,9 +16,9 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
       <SectionHeading
         id="github-title"
-        kicker="// experiments"
-        title="Fresh from the lab"
-        intro="Live from her GitHub: notebooks, papers and the occasional scraper. Pulled when the site is built, so it is as fresh as the last deploy."
+        :kicker="kicker"
+        :title="title"
+        :intro="intro"
       />
 
       <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -39,15 +40,21 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
               </a>
             </h3>
 
-            <p class="mt-3 flex-1 text-sm leading-relaxed">{{ describeRepo(repo) }}</p>
+            <p class="mt-3 flex-1 text-sm leading-relaxed">{{ repo.description?.trim() || noDescription }}</p>
 
             <p class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-muted">
               <span v-if="repo.language" class="inline-flex items-center gap-1.5">
                 <span class="size-2.5 rounded-full" :style="{ backgroundColor: languageColor(repo.language) }" aria-hidden="true" />
                 {{ repo.language }}
               </span>
-              <span v-if="repo.stars > 0">★ {{ repo.stars }}</span>
-              <span>pushed {{ formatPartialDate(repo.pushedAt.slice(0, 7)) }}</span>
+              <span v-if="repo.stars > 0" class="inline-flex items-center gap-1.5">
+                <FaIcon name="star" />
+                {{ repo.stars }}
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <FaIcon name="code-commit" />
+                {{ pushedLabel }} {{ formatPartialDate(repo.pushedAt.slice(0, 7)) }}
+              </span>
             </p>
           </article>
         </RevealOnScroll>
@@ -62,7 +69,7 @@ const handle = githubUrl.split('/').filter(Boolean).pop() ?? ''
           class="brand-btn inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 font-semibold transition hover:-translate-y-0.5 hover:shadow-lg"
         >
           <AppIcon name="github" :size="18" />
-          See everything on GitHub
+          {{ cta }}
           <span class="sr-only">(opens in a new tab)</span>
         </a>
       </RevealOnScroll>

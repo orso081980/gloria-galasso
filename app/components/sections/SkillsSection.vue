@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { levelToPercent } from '~/domain/cv/period'
 
-const { skills, languages } = useCv()
+const { skills, languages, copy } = useCv()
+const { kicker, title, intro } = copy.skills
+const { title: languagesTitle, intro: languagesIntro, items: languageItems } = languages
 
 const tones = ['bg-violet-soft text-violet', 'bg-accent-soft text-accent', 'bg-mint-soft text-mint', 'bg-sun-soft text-ink']
 const toneFor = (n: number) => tones[n % tones.length]
@@ -12,17 +14,22 @@ const toneFor = (n: number) => tones[n % tones.length]
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
       <SectionHeading
         id="skills-title"
-        kicker="// model_card.py"
-        title="Technical skills"
-        intro="The architecture, in four modules. Plus a multilingual head, because why stop at Python."
+        :kicker="kicker"
+        :title="title"
+        :intro="intro"
       />
 
       <div class="grid gap-6 md:grid-cols-2">
         <RevealOnScroll v-for="(group, index) in skills" :key="group.id" as="div" :delay="index * 90">
           <section class="h-full rounded-3xl border border-line bg-paper p-6 shadow-sm" :aria-labelledby="`skills-${group.id}`">
-            <h3 :id="`skills-${group.id}`" class="font-mono text-sm font-bold text-muted">
-              <span class="text-accent">{{ group.key }}</span> = [
-              <span class="sr-only">{{ group.label }}</span>
+            <h3 :id="`skills-${group.id}`" class="flex items-center gap-3 font-mono text-sm font-bold text-muted">
+              <span class="grid size-9 shrink-0 place-items-center rounded-xl bg-accent-soft text-base text-accent">
+                <FaIcon :name="group.icon" />
+              </span>
+              <span>
+                <span class="text-accent">{{ group.key }}</span> = [
+                <span class="sr-only">{{ group.label }}</span>
+              </span>
             </h3>
             <ul class="mt-4 flex flex-wrap gap-2 pl-2" :aria-label="group.label">
               <li
@@ -41,11 +48,14 @@ const toneFor = (n: number) => tones[n % tones.length]
 
       <!-- Languages -->
       <RevealOnScroll class="mt-10 rounded-3xl border border-line bg-paper p-6 shadow-sm sm:p-8">
-        <h3 class="font-display text-2xl font-bold">A multilingual model, naturally</h3>
-        <p class="mt-1 text-muted">Five supported languages. German is still being fine-tuned.</p>
+        <h3 class="flex items-center gap-3 font-display text-2xl font-bold">
+          <FaIcon name="globe" class="text-violet" />
+          {{ languagesTitle }}
+        </h3>
+        <p class="mt-1 text-muted">{{ languagesIntro }}</p>
 
         <ul class="mt-6 grid gap-x-10 gap-y-5 md:grid-cols-2">
-          <li v-for="language in languages" :key="language.name">
+          <li v-for="language in languageItems" :key="language.name">
             <div class="flex items-baseline justify-between gap-3">
               <span class="inline-flex items-center gap-2.5 font-semibold">
                 <FlagIcon :code="language.countryCode" />

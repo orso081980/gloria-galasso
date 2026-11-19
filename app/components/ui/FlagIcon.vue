@@ -1,11 +1,11 @@
 <script setup lang="ts">
-// Tree-shaken: only these five flags end up in the bundle (country-flag-icons, 3:2 SVG strings).
-import { DE, ES, FR, GB, IT } from 'country-flag-icons/string/3x2'
+// Tree-shaken: only these flags end up in the bundle (country-flag-icons, 3:2 SVG strings).
+import { BE, DE, ES, FR, GB, IT, US } from 'country-flag-icons/string/3x2'
 import type { CountryCode } from '~/domain/cv/types'
 
 const props = defineProps<{ code: CountryCode }>()
 
-const FLAGS: Record<CountryCode, string> = { DE, ES, FR, GB, IT }
+const FLAGS: Record<CountryCode, string> = { BE, DE, ES, FR, GB, IT, US }
 const svg = computed(() => FLAGS[props.code])
 </script>
 

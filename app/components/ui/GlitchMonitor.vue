@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ webp: string; jpg: string; alt: string }>()
+defineProps<{ webp: string; jpg: string; alt: string; osd: string; label: string }>()
 </script>
 
 <template>
@@ -25,11 +25,11 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
       <div class="crt-static crt-static-tint" aria-hidden="true" />
       <div class="crt-vignette" aria-hidden="true" />
 
-      <span class="crt-osd" aria-hidden="true">CH 03 ▶ PLAY</span>
+      <span class="crt-osd" aria-hidden="true">{{ osd }}</span>
     </div>
 
     <div class="flex items-center justify-between px-2 pb-1 pt-3 font-mono text-[10px] tracking-widest text-white/50" aria-hidden="true">
-      <span>GG-1000 · FINE-TUNED</span>
+      <span>{{ label }}</span>
       <span class="flex items-center gap-2">
         <span class="size-1.5 rounded-full bg-white/30" />
         <span class="crt-led size-2 rounded-full bg-[#ff5f57]" />

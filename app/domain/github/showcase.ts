@@ -21,8 +21,3 @@ const LANGUAGE_COLORS: Record<string, string> = {
 export function languageColor(language: string | null): string {
   return (language && LANGUAGE_COLORS[language]) || '#8b8fa8'
 }
-
-/** 'find-focal-terms' stays as is; this only decides what to say when a repo has no description. */
-export function describeRepo(repo: GithubRepo): string {
-  return repo.description?.trim() || 'No description. The code speaks for itself (and so does the README, hopefully).'
-}

@@ -1,10 +1,10 @@
-import { staticCvRepository } from '~/infrastructure/content/static-cv.repository'
+import { markdownCvRepository } from '~/infrastructure/content/markdown-cv.repository'
 import type { CvRepository } from '~/domain/cv/cv.repository'
 
 /**
  * Application layer entry point: components ask for the CV here and never know where it is stored.
- * Swap `repository` to change the data source.
+ * Today it comes from the markdown files in /content; swap `repository` to change the source.
  */
-export function useCv(repository: CvRepository = staticCvRepository) {
+export function useCv(repository: CvRepository = markdownCvRepository) {
   return repository.get()
 }

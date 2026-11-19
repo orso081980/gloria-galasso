@@ -2,12 +2,13 @@
 import { formatPartialDate, formatPeriod } from '~/domain/cv/period'
 import type { ExperienceKind } from '~/domain/cv/types'
 
-const { experience } = useCv()
+const { experience, copy } = useCv()
+const { kicker, title, intro, kindLabels } = copy.experience
 
-const kindLabel: Record<ExperienceKind, string> = {
-  industry: 'Industry',
-  research: 'Research',
-  policy: 'Policy & comms',
+const kindIcon: Record<ExperienceKind, string> = {
+  industry: 'briefcase',
+  research: 'flask',
+  policy: 'landmark',
 }
 const kindTone: Record<ExperienceKind, string> = {
   industry: 'bg-violet-soft text-violet',
@@ -20,7 +21,8 @@ const kindNode: Record<ExperienceKind, string> = {
   policy: 'bg-sun',
 }
 const toneOf = (kind: ExperienceKind) => kindTone[kind]
-const labelOf = (kind: ExperienceKind) => kindLabel[kind]
+const labelOf = (kind: ExperienceKind) => kindLabels[kind]
+const iconOf = (kind: ExperienceKind) => kindIcon[kind]
 const nodeOf = (kind: ExperienceKind) => kindNode[kind]
 
 // Desktop: cards alternate. Even entries sit on the left of the line, odd ones on the right.
@@ -32,9 +34,9 @@ const isLeft = (index: number) => index % 2 === 0
     <div class="mx-auto max-w-6xl px-5 sm:px-8">
       <SectionHeading
         id="experience-title"
-        kicker="// training_log.txt"
-        title="Where she has been deployed"
-        intro="Newest first. From EU policy rooms to multimodal LLMs for clinical research."
+        :kicker="kicker"
+        :title="title"
+        :intro="intro"
       />
 
       <ol class="relative">
@@ -72,7 +74,8 @@ const isLeft = (index: number) => index % 2 === 0
             ]"
           >
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 lg:hidden">
-              <span class="rounded-full px-3 py-1 font-mono text-xs font-bold" :class="toneOf(item.kind)">
+              <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-xs font-bold" :class="toneOf(item.kind)">
+                <FaIcon :name="iconOf(item.kind)" />
                 {{ labelOf(item.kind) }}
               </span>
               <p class="font-mono text-sm text-muted">{{ formatPeriod(item.period) }}</p>
@@ -80,14 +83,17 @@ const isLeft = (index: number) => index % 2 === 0
 
             <h3 class="mt-3 font-display text-2xl font-bold sm:text-3xl lg:mt-0">{{ item.role }}</h3>
             <p class="mt-1 text-lg font-semibold text-violet">{{ item.organization }}</p>
-            <p class="text-sm text-muted">{{ item.location }}</p>
+            <p class="mt-1 flex items-center gap-2 text-sm text-muted">
+              <FlagIcon :code="item.countryCode" />
+              {{ item.location }}
+            </p>
 
             <p class="mt-4 text-lg">{{ item.summary }}</p>
 
             <ul v-if="item.highlights.length" class="mt-4 space-y-2.5">
               <li v-for="highlight in item.highlights" :key="highlight" class="flex gap-3">
                 <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                <span>{{ highlight }}</span>
+                <span v-html="highlight" />
               </li>
             </ul>
 
@@ -108,7 +114,8 @@ const isLeft = (index: number) => index % 2 === 0
               <time v-if="item.period.end" :datetime="item.period.end">{{ formatPartialDate(item.period.end) }}</time>
               <span v-else>Present</span>
             </p>
-            <span class="mt-3 inline-block rounded-full px-3 py-1 font-mono text-xs font-bold" :class="toneOf(item.kind)">
+            <span class="mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-xs font-bold" :class="toneOf(item.kind)">
+              <FaIcon :name="iconOf(item.kind)" />
               {{ labelOf(item.kind) }}
             </span>
           </div>

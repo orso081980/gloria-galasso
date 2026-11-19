@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Question } from '~/domain/cv/types'
 
-const { questions } = useCv()
+const { questions, copy } = useCv()
+const { kicker, title, intro, terminalTitle, promptLabel, emptyState, confidenceLabel, sourceLabel } = copy.ask
 const { shown, isStreaming, start } = useTextStream()
 
 const active = ref<Question | null>(null)
@@ -27,9 +28,9 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
       <SectionHeading
         id="ask-title"
         large
-        kicker="// now with 0% hallucinations*"
-        title="Ask GloriaGPT"
-        intro="*Because every answer comes straight from her CV. No GPUs, no API key, no 'as an AI language model'. Pick a question and watch it stream."
+        :kicker="kicker"
+        :title="title"
+        :intro="intro"
       />
 
       <RevealOnScroll class="overflow-hidden rounded-[2.5rem] bg-night text-night-fg shadow-2xl">
@@ -37,11 +38,11 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
           <span class="size-3 rounded-full bg-[#ff5f57]" />
           <span class="size-3 rounded-full bg-[#febc2e]" />
           <span class="size-3 rounded-full bg-[#28c840]" />
-          <span class="ml-3 font-mono text-xs opacity-70">gloriagpt-1b · inference</span>
+          <span class="ml-3 font-mono text-xs opacity-70">{{ terminalTitle }}</span>
         </div>
 
         <div class="p-5 sm:p-8">
-          <p class="font-mono text-sm opacity-80" id="prompt-label">Pick a question:</p>
+          <p class="font-mono text-sm opacity-80" id="prompt-label">{{ promptLabel }}</p>
           <ul class="mt-4 flex flex-wrap gap-3" aria-labelledby="prompt-label">
             <li v-for="question in questions" :key="question.id">
               <button
@@ -67,11 +68,11 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
                 {{ shown }}<span v-if="isStreaming" class="animate-blink">▍</span>
               </p>
               <p v-if="!isStreaming" class="mt-4 text-xs opacity-70" aria-hidden="true">
-                confidence: {{ active.confidence.toFixed(2) }} · source: {{ active.source }}
+                {{ confidenceLabel }}: {{ active.confidence.toFixed(2) }} · {{ sourceLabel }}: {{ active.source }}
               </p>
             </template>
             <p v-else class="opacity-60">
-              Waiting for a prompt<span class="animate-blink">▍</span>
+              {{ emptyState }}<span class="animate-blink">▍</span>
             </p>
           </div>
 

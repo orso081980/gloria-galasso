@@ -14,6 +14,7 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/fonts'],
   css: ['~/assets/css/main.css'],
+  build: { transpile: ['@fortawesome/vue-fontawesome'] },
   vite: { plugins: [tailwindcss()] },
 
   // Components are organised in folders (layout/sections/ui) but referenced by file name.
@@ -33,12 +34,16 @@ export default defineNuxtConfig({
     public: {
       // Override with NUXT_PUBLIC_SITE_URL (Cloudflare Pages env var).
       siteUrl: 'https://gloria-galasso.pages.dev',
+      // Cloudflare Web Analytics beacon token (NUXT_PUBLIC_CF_ANALYTICS_TOKEN). Empty = no analytics script.
+      cfAnalyticsToken: '',
+      // Frozen at build time so structured data and sitemap always agree.
+      buildDate: new Date().toISOString().slice(0, 10),
     },
   },
 
   nitro: {
     prerender: {
-      routes: ['/sitemap.xml', '/robots.txt'],
+      routes: ['/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt'],
     },
   },
 
@@ -47,7 +52,14 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'en' },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [
+        // Her face, as a circle (tab icon), plus the sizes Google, Android and iOS ask for.
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'icon', type: 'image/png', href: '/favicon-48.png', sizes: '48x48' },
+        { rel: 'icon', type: 'image/png', href: '/icon-192.png', sizes: '192x192' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
+      ],
       meta: [
         { name: 'theme-color', content: '#fbf7f0', media: '(prefers-color-scheme: light)' },
         { name: 'theme-color', content: '#0f1120', media: '(prefers-color-scheme: dark)' },
