@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens ---------- */
+:root {
+  --paper: #fbf7f0;
+  --surface: #ffffff;
+  --ink: #1b1f3b;
+  --muted: #565b73;
+  --line: #e6dfd2;
+  --accent: #c2361c; /* coral, AA on paper */
+  --accent-soft: #ffe3da;
+  --violet: #5b3fd9;
+  --violet-soft: #e8e3ff;
+  --mint: #0f8a72;
+  --mint-soft: #d6f4ec;
+  --sun: #f5b82e;
+  --sun-soft: #fff1c9;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #0f1120;
+  --surface: #171a30;
+  --ink: #f1efe9;
+  --muted: #a7abc4;
+  --line: #2a2e4a;
+  --accent: #ff8a6b;
+  --accent-soft: #3a2230;
+  --violet: #a99bff;
+  --violet-soft: #29244f;
+  --mint: #4fd8b8;
+  --mint-soft: #15352f;
+  --sun: #f5c451;
+  --sun-soft: #3a3118;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-sun: var(--sun);
+  --color-sun-soft: var(--sun-soft);
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-scan: scan 3.4s ease-in-out infinite;
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-pop: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(24px, -30px, 0) scale(1.08); }
+  }
+  @keyframes scan {
+    0%, 100% { top: 6%; opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { top: 92%; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.9); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- Scroll reveal (hidden only when JS is running) ---------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Reusable bits ---------- */
+.dot-grid {
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.marker {
+  background: linear-gradient(transparent 62%, var(--sun-soft) 62%);
+  padding: 0 0.15em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

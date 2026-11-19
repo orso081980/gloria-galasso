@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+
+# Nuxt / Nitro build output
+.nuxt
+.output
+.nitro
+.cache
+dist
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Cloudflare / Wrangler local state
+.wrangler
+.dev.vars
+
+# OS / editor
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Type checking
+*.tsbuildinfo
