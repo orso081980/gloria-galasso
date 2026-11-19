@@ -26,6 +26,7 @@ Connect the GitHub repo in **Workers & Pages → Create → Pages → Connect to
 | Build output directory | `.output/public`       |
 | Environment variable   | `NUXT_PUBLIC_SITE_URL` = the final site URL, e.g. `https://gloria-galasso.pages.dev` or her custom domain |
 
+`NUXT_GITHUB_TOKEN` (optional, secret) lets the build read her public repos without GitHub rate limits; without it the build falls back to a bundled snapshot.
 `NUXT_PUBLIC_SITE_URL` feeds the canonical URL, Open Graph tags, `robots.txt` and `sitemap.xml`.
 Set it (and re-deploy) once the real domain is known.
 

@@ -138,11 +138,11 @@ export const gloriaCv: Cv = {
   ],
 
   languages: [
-    { name: 'Italian', level: 'Native' },
-    { name: 'English', level: 'C1' },
-    { name: 'German', level: 'B2', note: 'B2.2 in progress' },
-    { name: 'French', level: 'B1' },
-    { name: 'Spanish', level: 'B1' },
+    { name: 'Italian', countryCode: 'IT', level: 'Native' },
+    { name: 'English', countryCode: 'GB', level: 'C1' },
+    { name: 'German', countryCode: 'DE', level: 'B2', note: 'B2.2 in progress' },
+    { name: 'French', countryCode: 'FR', level: 'B1' },
+    { name: 'Spanish', countryCode: 'ES', level: 'B1' },
   ],
 
   education: [

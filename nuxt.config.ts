@@ -28,6 +28,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Optional GitHub token (server only, build time). Only raises the API rate limit.
+    githubToken: '',
     public: {
       // Override with NUXT_PUBLIC_SITE_URL (Cloudflare Pages env var).
       siteUrl: 'https://gloria-galasso.pages.dev',

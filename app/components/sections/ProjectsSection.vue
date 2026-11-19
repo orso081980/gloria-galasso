@@ -8,7 +8,7 @@ const { projects } = useCv()
   <section id="projects" class="mx-auto max-w-6xl px-5 py-20 sm:px-8" aria-labelledby="projects-title">
     <SectionHeading
       id="projects-title"
-      kicker="// experiments"
+      kicker="// showcase"
       title="NLP & speech projects"
       intro="Two experiments she is happy to talk about for far too long."
     />

@@ -16,6 +16,7 @@
     "deploy": "npm run generate && npx wrangler pages deploy .output/public --project-name=gloria-galasso"
   },
   "dependencies": {
+    "country-flag-icons": "^1.6.20",
     "nuxt": "^4.6.4",
     "vue": "^3.5.0"
   },

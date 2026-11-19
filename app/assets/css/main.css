@@ -136,6 +136,21 @@ body {
   100% { transform: rotate(0) scale(1.15); }
 }
 
+/* ---------- Brand buttons: on hover the button turns into the brand's own colour ---------- */
+.brand-btn {
+  --brand: #ff8a6b;
+  --brand-fg: #1b1f3b;
+}
+.brand-btn[data-brand='github'] { --brand: #181717; --brand-fg: #ffffff; }
+.brand-btn[data-brand='linkedin'] { --brand: #0a66c2; --brand-fg: #ffffff; }
+.dark .brand-btn[data-brand='github'],
+.on-night .brand-btn[data-brand='github'] { --brand: #f0f6fc; --brand-fg: #181717; }
+.brand-btn:is(:hover, :focus-visible) {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: var(--brand-fg);
+}
+
 /* ---------- Paw mouse cursor (used on the "Ask the model" prompt buttons) ---------- */
 .cursor-paw,
 .cursor-paw * {

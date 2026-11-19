@@ -22,21 +22,22 @@ onBeforeUnmount(() => clearTimeout(announceTimer))
 </script>
 
 <template>
-  <section id="ask" class="bg-surface/60 py-20" aria-labelledby="ask-title">
-    <div class="mx-auto max-w-4xl px-5 sm:px-8">
+  <section id="ask" class="py-20" aria-labelledby="ask-title">
+    <div class="mx-auto max-w-6xl px-5 sm:px-8">
       <SectionHeading
         id="ask-title"
-        kicker="// inference"
-        title="Ask the model about Gloria"
-        intro="Not a real LLM, just a tiny (and honest) one. Pick a question and watch the answer stream. Every answer comes straight from her CV."
+        large
+        kicker="// now with 0% hallucinations*"
+        title="Ask GloriaGPT"
+        intro="*Because every answer comes straight from her CV. No GPUs, no API key, no 'as an AI language model'. Pick a question and watch it stream."
       />
 
-      <RevealOnScroll class="overflow-hidden rounded-3xl border border-line bg-night text-night-fg shadow-2xl">
+      <RevealOnScroll class="overflow-hidden rounded-[2.5rem] bg-night text-night-fg shadow-2xl">
         <div class="flex items-center gap-2 border-b border-white/10 px-5 py-3" aria-hidden="true">
           <span class="size-3 rounded-full bg-[#ff5f57]" />
           <span class="size-3 rounded-full bg-[#febc2e]" />
           <span class="size-3 rounded-full bg-[#28c840]" />
-          <span class="ml-3 font-mono text-xs opacity-70">gloria-galasso-1b · inference</span>
+          <span class="ml-3 font-mono text-xs opacity-70">gloriagpt-1b · inference</span>
         </div>
 
         <div class="p-5 sm:p-8">

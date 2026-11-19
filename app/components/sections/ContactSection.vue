@@ -20,7 +20,7 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
 
 <template>
   <section id="contact" class="mx-auto max-w-6xl px-5 py-20 sm:px-8" aria-labelledby="contact-title">
-    <RevealOnScroll class="relative overflow-hidden rounded-[2.5rem] bg-night px-6 py-16 text-center text-night-fg sm:px-12">
+    <RevealOnScroll class="on-night relative overflow-hidden rounded-[2.5rem] bg-night px-6 py-16 text-center text-night-fg sm:px-12">
       <div class="pointer-events-none absolute inset-0" aria-hidden="true">
         <div class="animate-float absolute -left-10 -top-10 size-64 rounded-full bg-accent/40 blur-3xl" />
         <div class="animate-float absolute -bottom-16 -right-10 size-72 rounded-full bg-violet/50 blur-3xl [animation-delay:-4s]" />
@@ -54,13 +54,14 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
           <span class="sr-only" role="status" aria-live="polite">{{ copied ? 'Email address copied' : '' }}</span>
         </div>
 
-        <ul class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm font-medium">
+        <ul class="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm font-semibold">
           <li v-for="link in profile.links" :key="link.id">
             <a
               :href="link.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 underline-offset-4 hover:underline"
+              :data-brand="link.id"
+              class="brand-btn inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-5 py-2.5 transition hover:-translate-y-0.5"
             >
               <AppIcon :name="link.id" :size="18" />
               {{ link.label }}
@@ -68,7 +69,12 @@ onBeforeUnmount(() => clearTimeout(resetTimer))
             </a>
           </li>
           <li>
-            <a :href="profile.cvPdf" download class="inline-flex items-center gap-2 underline-offset-4 hover:underline">
+            <a
+              :href="profile.cvPdf"
+              download
+              data-brand="cv"
+              class="brand-btn inline-flex items-center gap-2 rounded-full border-2 border-white/30 px-5 py-2.5 transition hover:-translate-y-0.5"
+            >
               <AppIcon name="download" :size="18" />
               CV (PDF)
             </a>

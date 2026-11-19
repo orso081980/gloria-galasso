@@ -69,8 +69,12 @@ export interface SkillGroup {
 
 export type LanguageLevel = 'Native' | 'C1' | 'B2' | 'B1'
 
+/** ISO 3166-1 alpha-2 code of the flag shown next to a language. */
+export type CountryCode = 'IT' | 'GB' | 'DE' | 'FR' | 'ES'
+
 export interface LanguageSkill {
   name: string
+  countryCode: CountryCode
   level: LanguageLevel
   note?: string
 }

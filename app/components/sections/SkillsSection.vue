@@ -47,7 +47,10 @@ const toneFor = (n: number) => tones[n % tones.length]
         <ul class="mt-6 grid gap-x-10 gap-y-5 md:grid-cols-2">
           <li v-for="language in languages" :key="language.name">
             <div class="flex items-baseline justify-between gap-3">
-              <span class="font-semibold">{{ language.name }}</span>
+              <span class="inline-flex items-center gap-2.5 font-semibold">
+                <FlagIcon :code="language.countryCode" />
+                {{ language.name }}
+              </span>
               <span class="font-mono text-sm text-muted">
                 {{ language.level }}<template v-if="language.note"> · {{ language.note }}</template>
               </span>

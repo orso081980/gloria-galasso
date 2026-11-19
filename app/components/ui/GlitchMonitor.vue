@@ -3,7 +3,7 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
 </script>
 
 <template>
-  <!-- A calm CRT monitor. Hover it and it gets disturbed (glitch, colour split, noise, rolling bar). -->
+  <!-- A calm CRT monitor. Hover it and the signal gets disturbed: pixelated TV static. -->
   <div class="monitor relative rounded-[2rem] bg-[#1d2038] p-4 pb-3 shadow-2xl shadow-violet/30 ring-1 ring-line">
     <div class="crt relative aspect-square overflow-hidden rounded-[1.5rem] bg-black">
       <!-- the picture itself (the only layer that is not decorative) -->
@@ -19,15 +19,10 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
         >
       </picture>
 
-      <!-- glitch layers: colour-split ghosts + a sliced band (invisible until hover) -->
-      <img :src="webp" alt="" aria-hidden="true" loading="lazy" class="crt-ghost crt-ghost-r">
-      <img :src="webp" alt="" aria-hidden="true" loading="lazy" class="crt-ghost crt-ghost-c">
-      <img :src="webp" alt="" aria-hidden="true" loading="lazy" class="crt-ghost crt-ghost-slice">
-
       <!-- screen texture -->
-      <div class="crt-noise" aria-hidden="true" />
       <div class="crt-lines" aria-hidden="true" />
-      <div class="crt-roll" aria-hidden="true" />
+      <div class="crt-static crt-static-white" aria-hidden="true" />
+      <div class="crt-static crt-static-tint" aria-hidden="true" />
       <div class="crt-vignette" aria-hidden="true" />
 
       <span class="crt-osd" aria-hidden="true">CH 03 ▶ PLAY</span>
@@ -49,30 +44,6 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
   box-shadow: inset 0 0 40px rgb(0 0 0 / 0.55), 0 0 0 3px #0b0d1a;
 }
 
-.crt-ghost {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-.crt-ghost-r { filter: sepia(1) saturate(9) hue-rotate(-55deg) brightness(0.75); }
-.crt-ghost-c { filter: sepia(1) saturate(9) hue-rotate(135deg) brightness(0.75); }
-.crt-ghost-slice { mix-blend-mode: normal; }
-
-.crt-noise {
-  position: absolute;
-  inset: -50%;
-  opacity: 0;
-  mix-blend-mode: overlay;
-  transition: opacity 0.2s;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
 .crt-lines {
   position: absolute;
   inset: 0;
@@ -80,15 +51,24 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
   pointer-events: none;
 }
 
-.crt-roll {
+/*
+ * TV static, same trick as the buttons on tech-paw.com: a thresholded fractal-noise
+ * image used as a CSS mask over a flat colour, so only sparse speckles are painted.
+ * Invisible until hover; the mask then jumps around in steps.
+ */
+.crt-static {
   position: absolute;
-  inset-inline: 0;
-  top: -30%;
-  height: 28%;
+  inset: 0;
   opacity: 0;
-  background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.14), transparent);
   pointer-events: none;
+  transition: opacity 0.25s;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 -4.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 -4.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 180px 180px;
+  mask-size: 180px 180px;
 }
+.crt-static-white { background: #fff; }
+.crt-static-tint { background: #ff5fb0; mix-blend-mode: screen; }
 
 .crt-vignette {
   position: absolute;
@@ -114,97 +94,29 @@ defineProps<{ webp: string; jpg: string; alt: string }>()
   animation: crt-led 2.4s ease-in-out infinite;
 }
 
-/* ---------- Disturbed state: only while hovering (or keyboard focus inside) ---------- */
-.monitor:hover .crt,
-.monitor:focus-within .crt {
-  animation: crt-flicker 0.12s steps(2) infinite;
+/* ---------- Disturbed state: only while hovering (or focus inside) ---------- */
+.monitor:hover .crt-static,
+.monitor:focus-within .crt-static {
+  animation: crt-static-shift 0.6s step-end infinite;
 }
-.monitor:hover .crt-base img,
-.monitor:focus-within .crt-base img {
-  animation: crt-jitter 1.6s steps(1) infinite;
+.monitor:hover .crt-static-white,
+.monitor:focus-within .crt-static-white {
+  opacity: 0.42;
 }
-.monitor:hover .crt-ghost-r,
-.monitor:focus-within .crt-ghost-r {
-  animation: crt-split-r 1.6s steps(1) infinite;
-}
-.monitor:hover .crt-ghost-c,
-.monitor:focus-within .crt-ghost-c {
-  animation: crt-split-c 1.6s steps(1) infinite;
-}
-.monitor:hover .crt-ghost-slice,
-.monitor:focus-within .crt-ghost-slice {
-  animation: crt-slice 1.6s steps(1) infinite;
-}
-.monitor:hover .crt-noise,
-.monitor:focus-within .crt-noise {
-  opacity: 0.16;
-  animation: crt-noise 0.5s steps(5) infinite;
-}
-.monitor:hover .crt-roll,
-.monitor:focus-within .crt-roll {
-  opacity: 1;
-  animation: crt-roll 2.2s linear infinite;
-}
-.monitor:hover .crt-osd,
-.monitor:focus-within .crt-osd {
-  animation: crt-osd 1.6s steps(1) infinite;
+.monitor:hover .crt-static-tint,
+.monitor:focus-within .crt-static-tint {
+  opacity: 0.3;
+  animation-duration: 0.45s;
+  animation-direction: reverse;
 }
 
-/* Two short glitch bursts per 1.6s cycle. */
-@keyframes crt-jitter {
-  0%, 12%, 48%, 62%, 100% { transform: none; filter: none; }
-  3% { transform: translate(-7px, 0) skewX(5deg); filter: hue-rotate(40deg) saturate(1.8) contrast(1.2); }
-  6% { transform: translate(6px, 2px); filter: saturate(0.5) contrast(1.4); }
-  9% { transform: translate(-3px, -1px) skewX(-4deg); filter: none; }
-  50% { transform: translate(4px, 0) skewX(3deg); filter: hue-rotate(-30deg); }
-  55% { transform: translate(-5px, 1px); filter: contrast(1.3); }
-  58% { transform: translate(2px, 0); filter: none; }
-}
-@keyframes crt-split-r {
-  0%, 12%, 48%, 62%, 100% { opacity: 0; transform: none; }
-  3% { opacity: 0.4; transform: translateX(9px); }
-  6% { opacity: 0.4; transform: translateX(-7px); }
-  9% { opacity: 0.3; transform: translateX(5px); }
-  50% { opacity: 0.4; transform: translateX(7px); }
-  56% { opacity: 0.3; transform: translateX(-5px); }
-}
-@keyframes crt-split-c {
-  0%, 12%, 48%, 62%, 100% { opacity: 0; transform: none; }
-  3% { opacity: 0.4; transform: translateX(-9px); }
-  6% { opacity: 0.4; transform: translateX(7px); }
-  9% { opacity: 0.3; transform: translateX(-5px); }
-  50% { opacity: 0.4; transform: translateX(-7px); }
-  56% { opacity: 0.3; transform: translateX(5px); }
-}
-@keyframes crt-slice {
-  0%, 12%, 48%, 62%, 100% { opacity: 0; clip-path: inset(40% 0 50% 0); transform: none; }
-  3% { opacity: 0.9; clip-path: inset(22% 0 66% 0); transform: translateX(22px); }
-  6% { opacity: 0.9; clip-path: inset(58% 0 30% 0); transform: translateX(-26px); }
-  9% { opacity: 0.9; clip-path: inset(40% 0 48% 0); transform: translateX(14px); }
-  50% { opacity: 0.9; clip-path: inset(70% 0 20% 0); transform: translateX(-18px); }
-  56% { opacity: 0.9; clip-path: inset(12% 0 78% 0); transform: translateX(16px); }
-}
-@keyframes crt-roll {
-  from { top: -30%; }
-  to { top: 110%; }
-}
-@keyframes crt-noise {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-6%, 4%); }
-  40% { transform: translate(5%, -7%); }
-  60% { transform: translate(-3%, 8%); }
-  80% { transform: translate(7%, 2%); }
-  100% { transform: translate(0, 0); }
-}
-@keyframes crt-flicker {
-  0% { opacity: 1; }
-  100% { opacity: 0.955; }
-}
-@keyframes crt-osd {
-  0%, 12%, 48%, 62%, 100% { opacity: 1; transform: none; }
-  4% { opacity: 0.3; transform: translateX(4px); }
-  8% { opacity: 1; transform: translateX(-3px); }
-  52% { opacity: 0.4; transform: translateX(3px); }
+@keyframes crt-static-shift {
+  0% { -webkit-mask-position: 0 0; mask-position: 0 0; }
+  20% { -webkit-mask-position: -38px 22px; mask-position: -38px 22px; }
+  40% { -webkit-mask-position: 26px -44px; mask-position: 26px -44px; }
+  60% { -webkit-mask-position: -52px -18px; mask-position: -52px -18px; }
+  80% { -webkit-mask-position: 34px 40px; mask-position: 34px 40px; }
+  100% { -webkit-mask-position: 0 0; mask-position: 0 0; }
 }
 @keyframes crt-led {
   0%, 100% { opacity: 1; }

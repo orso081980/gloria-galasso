@@ -6,7 +6,8 @@ const links = [
   { href: '#projects', label: 'Projects' },
   { href: '#skills', label: 'Skills' },
   { href: '#education', label: 'Education' },
-  { href: '#ask', label: 'Ask the model' },
+  { href: '#github', label: 'GitHub' },
+  { href: '#ask', label: 'GloriaGPT' },
 ]
 
 const menuOpen = ref(false)

@@ -18,6 +18,7 @@ useSiteSeo()
     <ProjectsSection />
     <SkillsSection />
     <EducationSection />
+    <GithubSection />
     <AskTheModelSection />
     <ContactSection />
   </main>

@@ -68,7 +68,8 @@ const focus = useTypewriter(profile.focusAreas)
               :href="link.url"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex size-11 items-center justify-center rounded-full border border-line bg-surface transition hover:-translate-y-1 hover:border-violet hover:bg-violet hover:text-paper hover:shadow-lg"
+              class="brand-btn inline-flex size-11 items-center justify-center rounded-full border border-line bg-surface transition hover:-translate-y-1 hover:shadow-lg"
+              :data-brand="link.id"
               :aria-label="`${link.label} (opens in a new tab)`"
             >
               <AppIcon :name="link.id" />
