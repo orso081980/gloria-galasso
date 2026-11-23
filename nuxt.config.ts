@@ -70,6 +70,8 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/icon-192.png', sizes: '192x192' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
+        // Points crawlers straight at the sitemap (it is also listed in robots.txt).
+        { rel: 'sitemap', type: 'application/xml', title: 'Sitemap', href: '/sitemap.xml' },
       ],
       meta: [
         // Google Search Console ownership check (HTML tag method).

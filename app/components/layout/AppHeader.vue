@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
   >
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
       <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" :aria-label="homeLabel">
-        <span class="grid size-9 place-items-center rounded-xl bg-ink text-sm font-black text-paper">GG</span>
+        <img src="/icon-192.png" alt="" width="36" height="36" class="size-9 rounded-full object-cover ring-2 ring-line">
         <span class="hidden sm:inline lg:hidden xl:inline">{{ profile.name }}</span>
       </a>
 
@@ -133,7 +133,7 @@ onBeforeUnmount(() => {
     >
       <div class="flex h-16 shrink-0 items-center justify-between px-5">
         <a href="#top" class="flex items-center gap-2 font-display text-lg font-bold" :aria-label="homeLabel" @click="closeMenu">
-          <span class="grid size-9 place-items-center rounded-xl bg-ink text-sm font-black text-paper">GG</span>
+          <img src="/icon-192.png" alt="" width="36" height="36" class="size-9 rounded-full object-cover ring-2 ring-line">
         </a>
         <div class="flex items-center gap-2">
           <ThemeToggle />
