@@ -72,6 +72,8 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/site.webmanifest' },
       ],
       meta: [
+        // Google Search Console ownership check (HTML tag method).
+        { name: 'google-site-verification', content: 'Rd6BVMSlSXus2IkdGVlnv7KcUFMaYlnEpcbZhaxPicE' },
         { name: 'theme-color', content: '#fbf7f0', media: '(prefers-color-scheme: light)' },
         { name: 'theme-color', content: '#0f1120', media: '(prefers-color-scheme: dark)' },
       ],
