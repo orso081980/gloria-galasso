@@ -5,6 +5,6 @@ items:
   - { name: "Italienisch", country: "IT", level: "Native" }
   - { name: "Englisch", country: "GB", level: "C1" }
   - { name: "Deutsch", country: "DE", level: "C1" }
-  - { name: "Französisch", country: "FR", level: "B1" }
-  - { name: "Spanisch", country: "ES", level: "B1" }
+  - { name: "Französisch", country: "FR", level: "C1" }
+  - { name: "Spanisch", country: "ES", level: "B2" }
 ---
