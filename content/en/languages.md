@@ -6,6 +6,6 @@ items:
   - { name: Italian, country: IT, level: Native }
   - { name: English, country: GB, level: C1 }
   - { name: German, country: DE, level: C1 }
-  - { name: French, country: FR, level: C1 }
+  - { name: French, country: FR, level: B2 }
   - { name: Spanish, country: ES, level: B2 }
 ---
